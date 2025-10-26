@@ -1,0 +1,931 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sigma — Gestión Patrimonial, Inversiones, Inmuebles y Seguros</title>
+<meta name="description" content="Soluciones financieras integrales para tu familia y tu empresa: gestión patrimonial, corretaje de seguros, asesoría inmobiliaria y bancaria.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23173D7A' stroke-width='8'/%3E%3C/svg%3E">
+<style>
+/* =========================
+   Variables & Reset
+   ========================= */
+:root{
+  --primary:#173D7A;   /* azul corporativo */
+  --accent:#3AB5C2;    /* azul teal secundario */
+  --bg:#F5F8FB;        /* fondo suave */
+  --text:#1E1E1E;      /* texto principal */
+  --muted:#657185;     /* texto secundario */
+  --card:#ffffff;      /* tarjetas */
+  --ring: rgba(0,0,0,.07);
+  --radius: 16px;
+  --container: 1200px;
+  --shadow: 0 8px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.06);
+}
+
+*{ box-sizing:border-box }
+html,body{ height:100% }
+html{ scroll-behavior:smooth }
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.6;
+}
+
+/* =========================
+   Helpers
+   ========================= */
+.container{
+  width:100%;
+  max-width:var(--container);
+  margin-inline:auto;
+  padding-inline:20px;
+}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  gap:.6rem; padding:.9rem 1.2rem;
+  border-radius:12px; border:1px solid transparent;
+  font-weight:600; cursor:pointer; user-select:none;
+  transition:transform .05s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+}
+.btn:active{ transform:translateY(1px) }
+.btn.primary{
+  background:var(--primary); color:#fff; box-shadow:var(--shadow);
+}
+.btn.primary:hover{ background:#102d5a }
+.btn.ghost{
+  background: rgba(255,255,255,0.1); 
+  color: #fff; 
+  border: 1.5px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px);
+}
+.btn.ghost:hover{ 
+  background: rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* =========================
+   Header / Nav
+   ========================= */
+header{
+  position:sticky; top:0; z-index:60;
+  background:#E9F1F9; /* match de header claro */
+  backdrop-filter:saturate(120%) blur(8px);
+  box-shadow: 0 2px 10px var(--ring);
+}
+.navbar{
+  height:68px; display:flex; align-items:center; justify-content:space-between;
+  gap:16px;
+}
+.brand{ display:flex; align-items:center; gap:12px }
+.brand img{ height:34px; width:auto; display:block; object-fit:contain }
+.brand .wordmark { 
+  display: none; 
+}
+
+.navlinks{
+  display:flex; align-items:center; gap:32px;
+}
+.navlinks a{
+  text-decoration:none; color:#1f2a3b; font-weight:600;
+  padding:.4rem .25rem; border-radius:10px;
+}
+.navlinks a:hover{ color:var(--primary) }
+
+.cta-wrap{ display:flex; align-items:center; gap:10px }
+
+.menu-btn{
+  display:none; border:1px solid #cfd8ea; background:#fff; color:#334;
+  height:40px; width:44px; border-radius:12px; align-items:center; justify-content:center;
+}
+.menu-btn svg{ width:22px; height:22px }
+
+/* Mobile menu */
+.mobile-panel{
+  display:none; background:#fff; border-top:1px solid #e7ecf7; box-shadow:var(--shadow);
+}
+.mobile-panel .links{
+  display:flex; flex-direction:column; gap:6px; padding:12px 16px;
+}
+.mobile-panel a{
+  text-decoration:none; color:#203047; padding:12px; border-radius:12px;
+}
+.mobile-panel a:hover{ background:#f2f6ff }
+
+/* =========================
+   Hero
+   ========================= */
+.hero{
+  position:relative; 
+  min-height:78vh; 
+  display:grid; 
+  align-items:center;
+  background: linear-gradient(135deg, #0f2442 0%, #173D7A 40%, #1e52a3 100%);
+  color:#fff;
+  overflow: hidden;
+}
+
+/* Formas geométricas con blur */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  right: 5%;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, rgba(58,181,194,0.3), rgba(37,99,235,0.2));
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+  filter: blur(40px);
+  animation: morph 15s ease-in-out infinite;
+  opacity: 0.6;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 10%;
+  left: 10%;
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(225deg, rgba(212,175,55,0.25), rgba(58,181,194,0.15));
+  border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+  filter: blur(40px);
+  animation: morph 12s ease-in-out infinite reverse;
+  opacity: 0.5;
+}
+
+.hero .grid-pattern {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 100px 100px;
+  z-index: 0;
+}
+
+@keyframes morph {
+  0%, 100% { 
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    transform: rotate(0deg) scale(1);
+  }
+  50% { 
+    border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
+    transform: rotate(180deg) scale(1.1);
+  }
+}
+.hero .inner{
+  position:relative; z-index:1; padding-block:84px; 
+}
+.hero .kicker{
+  display:inline-flex; align-items:center; gap:.6rem;
+  padding:.5rem .8rem; border-radius:999px;
+  background:rgba(255,255,255,.16); backdrop-filter:blur(4px);
+  font-weight:600;
+}
+.hero h1{
+  margin:18px 0 8px; font-size: clamp(2rem, 3.6vw + .8rem, 3.2rem);
+  line-height:1.15; letter-spacing:.2px;
+}
+.hero p{ max-width:720px; font-size:1.05rem; opacity:.95 }
+.hero .actions{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
+
+/* =========================
+   About Stats
+   ========================= */
+.about{
+  padding:64px 0 12px;
+  background:linear-gradient(180deg, #fff, #f7faff);
+}
+.about h2{ text-align:center; font-size: clamp(1.6rem, 2.2vw + .8rem, 2.2rem); margin:0 0 16px; color:#102d5a }
+.about p.lead{ text-align:center; color:var(--muted); margin:0 auto 26px; max-width:800px }
+
+.stats{
+  display:grid; gap:16px; grid-template-columns: repeat(4, 1fr);
+}
+.stat{
+  background:var(--card); border:1px solid #e8eef8; border-radius:var(--radius);
+  padding:22px 18px; text-align:center; box-shadow: var(--shadow);
+}
+.stat h3{ margin:0; font-size:2rem; color:var(--primary) }
+.stat p{ margin:.25rem 0 0; color:#556072; font-weight:600 }
+
+/* =========================
+   Units (Unidades de negocio)
+   ========================= */
+.units{ padding:56px 0 }
+.units h2{ text-align:center; margin:0 0 24px; color:#0f2b58 }
+.grid-units{
+  display:grid; gap:18px; grid-template-columns: repeat(4, 1fr);
+}
+.unit{
+  background:var(--card); border:1px solid #e8eef8; border-radius:var(--radius);
+  padding:22px; box-shadow:var(--shadow);
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.unit:hover{ transform:translateY(-2px); box-shadow:0 16px 34px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.06); border-color:#dbe6fb }
+.unit .tag{ font-size:.825rem; font-weight:700; color:var(--accent); letter-spacing:.4px; text-transform:uppercase }
+.unit h3{ margin:.35rem 0 0; color:#10253f }
+.unit p{ margin:.35rem 0 0; color:#5f6b7d }
+
+/* =========================
+   Partners / Allies
+   ========================= */
+.partners{
+  background:linear-gradient(180deg,#ffffff,#f3f7ff);
+  padding:54px 0;
+}
+.partners h2{ text-align:center; margin:0 0 14px; color:#0f2b58 }
+.partner-row{
+  display:flex; gap:28px; flex-wrap:wrap; align-items:center; justify-content:center;
+  margin-top:8px;
+}
+.partner-row img{
+  height:38px; width:auto; opacity:.9; filter:grayscale(10%);
+}
+
+/* =========================
+   Benefits
+   ========================= */
+.benefits{ padding:56px 0 }
+.benefits h2{ text-align:center; color:#0f2b58; margin:0 0 16px }
+.benefits p.lead{ text-align:center; color:var(--muted); margin:0 auto 28px; max-width:780px }
+.benefit-grid{
+  display:grid; gap:16px; grid-template-columns: repeat(2, 1fr);
+}
+.benefit{
+  background:var(--card); border:1px solid #e8eef8; border-radius:var(--radius);
+  padding:18px 18px 18px 58px; position:relative; box-shadow:var(--shadow);
+}
+.benefit:before{
+  content:""; position:absolute; left:18px; top:18px; width:28px; height:28px;
+  border-radius:8px; background:linear-gradient(135deg, var(--accent), #7ad7df);
+  mask: url('data:image/svg+xml,%3Csvg width="24" height="24" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill="%23fff" d="M9.55 17.3 4.7 12.46l1.77-1.77 3.08 3.08 7.09-7.09 1.77 1.77z"/%3E%3C/svg%3E') center/70% no-repeat;
+  box-shadow: 0 6px 18px rgba(58,181,194,.35);
+}
+.benefit h4{ margin:.1rem 0 .35rem; color:#0f233f }
+.benefit p{ margin:0; color:#596476 }
+
+/* =========================
+   CTA band
+   ========================= */
+.cta{
+  background: radial-gradient(1200px 700px at 50% 0%, #24498c, #173D7A);
+  color:#fff; text-align:center; padding:64px 20px; margin:18px 0 0;
+}
+.cta h3{ font-size: clamp(1.4rem, 1.2rem + 2vw, 2.1rem); margin:0 0 10px }
+.cta p{ margin:0 0 18px; color:#e6efff }
+
+/* =========================
+   Contact
+   ========================= */
+.contact{ padding:56px 0 74px }
+.contact h2{ text-align:center; color:#0f2b58; margin:0 0 18px }
+.form{
+  max-width:760px; margin:0 auto; background:var(--card); border:1px solid #e5ecf8; border-radius:20px;
+  padding:18px; box-shadow:var(--shadow);
+}
+.form .row{ display:grid; grid-template-columns:1fr 1fr; gap:12px }
+.form label{ display:block; font-weight:600; color:#2a3851; margin:6px 0 }
+.form input, .form textarea{
+  width:100%; border:1px solid #ccd6ea; border-radius:12px; padding:12px;
+  outline:none; background:#fbfdff;
+}
+.form input:focus, .form textarea:focus{ border-color:#9fb5ee; box-shadow:0 0 0 4px #e9f0ff }
+.form textarea{ resize:vertical; min-height:120px }
+
+/* =========================
+   Footer
+   ========================= */
+footer{
+  background:#122135; color:#c9d6ee; padding:34px 0 26px; margin-top:24px;
+  border-top: 6px solid #24498c;
+}
+.footer-grid{
+  display:grid; gap:18px; grid-template-columns: 1.4fr 1fr 1fr;
+}
+footer h4{ margin:0 0 10px; color:#e9f1ff }
+footer a{ color:#cbd8ff; text-decoration:none }
+footer a:hover{ text-decoration:underline }
+.copy{ text-align:center; color:#9bb0d8; margin-top:16px; font-size:.95rem }
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 980px){
+  .navlinks{ display:none }
+  .menu-btn{ display:inline-flex }
+  .stats{ grid-template-columns: repeat(2, 1fr) }
+  .grid-units{ grid-template-columns: repeat(2, 1fr) }
+  .benefit-grid{ grid-template-columns: 1fr }
+  .footer-grid{ grid-template-columns: 1fr }
+}
+@media (max-width: 640px){
+  .brand .wordmark{ display:none } /* en móvil dejamos solo el isotipo o logo compacto */
+  .stat h3{ font-size:1.7rem }
+}
+
+/* Simple reveal animation */
+.reveal{ opacity:0; transform:translateY(12px); animation:reveal .7s ease forwards }
+@keyframes reveal{ to{ opacity:1; transform:none } }
+/* ====== Partners: carrusel de logos ====== */
+.partners {
+  padding: 56px 0 72px;
+  background: linear-gradient(#f4f9ff, #eef5ff);
+}
+.partners .title {
+  text-align: center;
+  font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+  font-weight: 800;
+  color: #0b2a5a;
+  margin: 0 0 .25rem;
+}
+.partners .subtitle {
+  text-align: center;
+  color: #475569;
+  margin: 0 0 1.75rem;
+}
+
+.logo-ticker {
+  --logo-h: 40px;
+  --gap: 48px;
+  --speed: 30s;  /* un poco más lento para que se vea más suave */
+  overflow: hidden;
+  position: relative;
+  padding: 12px 0;
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.logo-track {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  animation: tickerScroll var(--speed) linear infinite;
+  will-change: transform;
+}
+
+.logo-track li {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  padding-right: var(--gap);  /* el gap ahora es padding del li */
+}
+
+.logo-track img {
+  height: var(--logo-h);
+  width: auto;
+  display: block;
+  object-fit: contain;
+  filter: grayscale(100%) contrast(1.05) opacity(.85);
+  transition: filter .2s ease;
+}
+
+.logo-track img:hover {
+  filter: grayscale(0%) opacity(1);
+}
+
+@keyframes tickerScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-66.666%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-track { 
+    animation: none;
+  }
+}
+/* Elemento flotante adicional - esquina superior izquierda */
+.hero .inner::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(58,181,194,0.15), transparent);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: float 18s ease-in-out infinite;
+  z-index: -1;
+}
+.hero .kicker{
+  display:inline-flex; 
+  align-items:center; 
+  gap:.6rem;
+  padding:.6rem 1rem; 
+  border-radius:999px;
+  background: rgba(255,255,255,0.12); 
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  font-weight:600;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}.btn.primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn.primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s;
+}
+
+.btn.primary:hover::before {
+  left: 100%;
+}
+/* ====== Market Ticker ====== */
+.market-ticker {
+  background: linear-gradient(90deg, #0a1929 0%, #0d2642 100%);
+  border-top: 1px solid rgba(58,181,194,0.2);
+  border-bottom: 1px solid rgba(58,181,194,0.2);
+  overflow: hidden;
+  position: relative;
+  padding: 8px 0;
+  font-family: 'Courier New', monospace;
+}
+
+.ticker-track {
+  display: flex;
+  gap: 40px;
+  animation: tickerScroll 40s linear infinite;
+  width: max-content;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 20px;
+  white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.ticker-item:last-child {
+  border-right: none;
+}
+
+.ticker-item .symbol {
+  font-weight: 700;
+  color: #e0e7ff;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+}
+
+.ticker-item .price {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.ticker-item .change {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.ticker-item .change.positive {
+  color: #10b981;
+  background: rgba(16,185,129,0.1);
+}
+
+.ticker-item .change.positive::before {
+  content: '▲ ';
+}
+
+.ticker-item .change.negative {
+  color: #ef4444;
+  background: rgba(239,68,68,0.1);
+}
+
+.ticker-item .change.negative::before {
+  content: '▼ ';
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track { animation: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container navbar">
+    <a href="#inicio" class="brand">
+      <img src="assets/logo-sigma.png" alt="Sigma" />
+      <span class="wordmark">SIGMA</span>
+    </a>
+
+    <nav class="navlinks">
+      <a href="#servicios">Servicios</a>
+      <a href="#unidades">Unidades</a>
+      <a href="#aliados">Aliados</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <div class="cta-wrap">
+      <a class="btn primary" href="https://wa.me/584123169718?text=Hola,%20me%20gustaría%20contactar%20un%20asesor" target="_blank" rel="noopener noreferrer">Contáctanos</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2a3b55" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+  <!-- Panel móvil -->
+  <div class="mobile-panel" id="mobilePanel">
+    <div class="links">
+      <a href="#servicios">Servicios</a>
+      <a href="#unidades">Unidades</a>
+      <a href="#aliados">Aliados</a>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+  </div>
+</header>
+<!-- BARRA DE COTIZACIONES DE BOLSA FICTICIA - INICIO -->
+<!-- Ticker de Mercados -->
+<div class="market-ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">
+      <span class="symbol">S&P 500</span>
+      <span class="price">5,234.18</span>
+      <span class="change positive">+0.85%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">NASDAQ</span>
+      <span class="price">16,274.94</span>
+      <span class="change positive">+1.24%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">DOW</span>
+      <span class="price">39,131.53</span>
+      <span class="change negative">-0.12%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">AAPL</span>
+      <span class="price">$178.25</span>
+      <span class="change positive">+2.13%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">MSFT</span>
+      <span class="price">$412.80</span>
+      <span class="change positive">+1.45%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">GOOGL</span>
+      <span class="price">$141.20</span>
+      <span class="change negative">-0.34%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">TSLA</span>
+      <span class="price">$247.15</span>
+      <span class="change positive">+3.67%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">BTC-USD</span>
+      <span class="price">$67,234</span>
+      <span class="change positive">+4.21%</span>
+    </div>
+    
+    <!-- Duplicados para scroll infinito -->
+    <div class="ticker-item">
+      <span class="symbol">S&P 500</span>
+      <span class="price">5,234.18</span>
+      <span class="change positive">+0.85%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">NASDAQ</span>
+      <span class="price">16,274.94</span>
+      <span class="change positive">+1.24%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">DOW</span>
+      <span class="price">39,131.53</span>
+      <span class="change negative">-0.12%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">AAPL</span>
+      <span class="price">$178.25</span>
+      <span class="change positive">+2.13%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">MSFT</span>
+      <span class="price">$412.80</span>
+      <span class="change positive">+1.45%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">GOOGL</span>
+      <span class="price">$141.20</span>
+      <span class="change negative">-0.34%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">TSLA</span>
+      <span class="price">$247.15</span>
+      <span class="change positive">+3.67%</span>
+    </div>
+    <div class="ticker-item">
+      <span class="symbol">BTC-USD</span>
+      <span class="price">$67,234</span>
+      <span class="change positive">+4.21%</span>
+    </div>
+  </div>
+</div>
+<!-- BARRA DE COTIZACIONES DE BOLSA FICTICIA - FIN -->
+<!-- HERO -->
+<section class="hero" id="inicio" role="banner" aria-label="Portada">
+  <div class="overlay"></div>
+  <div class="container inner reveal">
+    <span class="kicker">Soluciones financieras para familia y empresa</span>
+    <h1>Ahorra, planifica y crece</h1>
+    <p>Gestión patrimonial, corretaje de seguros, banca internacional, asesoría inmobiliaria y portafolios gestionados por expertos.</p>
+    <div class="actions">
+      <a href="#contacto" class="btn primary">Agenda una Consulta</a>
+      <a href="#servicios" class="btn ghost">Ver Servicios</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / STATS -->
+<section class="about" id="servicios">
+  <div class="container">
+    <h2 class="reveal">Acerca de Sigma</h2>
+    <p class="lead reveal">Ofrecemos soluciones completas y personalizadas para proteger y hacer crecer tu patrimonio, con el respaldo de profesionales y aliados globales.</p>
+
+    <div class="stats">
+      <div class="stat reveal"><h3>+4.000</h3><p>Clientes globales</p></div>
+      <div class="stat reveal"><h3>+70</h3><p>Productos y servicios</p></div>
+      <div class="stat reveal"><h3>+60</h3><p>Profesionales</p></div>
+      <div class="stat reveal"><h3>4</h3><p>Unidades de negocio</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIDADES -->
+<section class="units" id="unidades">
+  <div class="container">
+    <h2 class="reveal">Unidades de Negocio</h2>
+    <div class="grid-units">
+      <div class="unit reveal">
+        <span class="tag">Gestión patrimonial</span>
+        <h3>Family Office</h3>
+        <p>Planificación patrimonial, banca y portafolios con enfoque de largo plazo.</p>
+      </div>
+      <div class="unit reveal">
+        <span class="tag">Corretaje</span>
+        <h3>Seguros</h3>
+        <p>Salud, vida y viajes. Acompañamos cada siniestro 24/7 como tu mejor aliado.</p>
+      </div>
+      <div class="unit reveal">
+        <span class="tag">Asesoría</span>
+        <h3>Inmobiliaria</h3>
+        <p>Compra, venta y administración de inmuebles con visión de inversión.</p>
+      </div>
+      <div class="unit reveal">
+        <span class="tag">Empresarial</span>
+        <h3>Consultoría</h3>
+        <p>Estrategia, finanzas y procesos para potenciar tu negocio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNERS -->
+<section class="partners" id="aliados" aria-label="Aliados estratégicos">
+  <div class="container">
+    <h2 class="title">Cuentas administradas por profesionales</h2>
+    <p class="subtitle">
+      Trabajamos con bancos, brokers y gestores de activos de clase mundial.
+    </p>
+
+    <div class="logo-ticker" aria-label="Empresas con las que trabajamos">
+      <ul class="logo-track">
+  <!-- SET 1: Originales -->
+  <li>
+    <a href="https://www.blackrock.com" target="_blank" rel="noopener noreferrer" aria-label="BlackRock" title="Ir a BlackRock">
+      <img src="assets/partners/ally-blackrock.png" alt="BlackRock" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.interactivebrokers.com" target="_blank" rel="noopener noreferrer" aria-label="Interactive Brokers" title="Ir a Interactive Brokers">
+      <img src="assets/partners/ally-ib.png" alt="Interactive Brokers" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://facebank.pr" target="_blank" rel="noopener noreferrer" aria-label="Facebank" title="Ir a Facebank">
+      <img src="assets/partners/ally-facebank.png" alt="Facebank" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.bcpglobal.com" target="_blank" rel="noopener noreferrer" aria-label="BCP Global" title="Ir a BCP Global">
+      <img src="assets/partners/ally-bcp-global.png" alt="BCP Global" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.vestiva.app" target="_blank" rel="noopener noreferrer" aria-label="Vestiva" title="Ir a Vestiva">
+      <img src="assets/partners/ally-vestiva.png" alt="Vestiva" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.empirefa.com" target="_blank" rel="noopener noreferrer" aria-label="Empire Financial" title="Empire Financial">
+      <img src="assets/partners/ally-empire.png" alt="Empire Financial" loading="lazy">
+    </a>
+  </li>
+
+  <!-- SET 2: Primera duplicación -->
+  <li>
+    <a href="https://www.blackrock.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-blackrock.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.interactivebrokers.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-ib.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://facebank.pr" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-facebank.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.bcpglobal.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-bcp-global.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.vestiva.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-vestiva.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.empirefa.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-empire.png" alt="" loading="lazy">
+    </a>
+  </li>
+
+  <!-- SET 3: Segunda duplicación -->
+  <li>
+    <a href="https://www.blackrock.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-blackrock.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.interactivebrokers.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-ib.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://facebank.pr" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-facebank.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.bcpglobal.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-bcp-global.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.vestiva.app" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-vestiva.png" alt="" loading="lazy">
+    </a>
+  </li>
+  <li>
+    <a href="https://www.empirefa.com" target="_blank" rel="noopener noreferrer" tabindex="-1" aria-hidden="true">
+      <img src="assets/partners/ally-empire.png" alt="" loading="lazy">
+    </a>
+  </li>
+</ul>
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="benefits" id="beneficios">
+  <div class="container">
+    <h2 class="reveal">Logra lo que te propongas</h2>
+    <p class="lead reveal">Construimos una ruta financiera para cada objetivo y te acompañamos en cada paso.</p>
+
+    <div class="benefit-grid">
+      <div class="benefit reveal"><h4>Jubilación tranquila</h4><p>Plan de retiro con ingresos sostenibles y protección del capital.</p></div>
+      <div class="benefit reveal"><h4>Comprar vivienda</h4><p>Estrategia de ahorro e inversión alineada a tu plazo y moneda.</p></div>
+      <div class="benefit reveal"><h4>Educación para hijos</h4><p>Fondos designados y seguros que protegen el proyecto familiar.</p></div>
+      <div class="benefit reveal"><h4>Seguridad financiera</h4><p>Políticas de vida y salud con atención de siniestros 24/7.</p></div>
+      <div class="benefit reveal"><h4>Ingresos pasivos</h4><p>Portafolios de bonos y modelos por perfil de riesgo.</p></div>
+      <div class="benefit reveal"><h4>Viajar y crecer</h4><p>Coberturas de viaje, banca internacional y liquidez global.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <h3 class="reveal">¿Listo para proteger y hacer crecer tu patrimonio?</h3>
+    <p class="reveal">Agenda una consulta gratuita con nuestros expertos.</p>
+    <a href="#contacto" class="btn primary reveal">Contactar Ahora</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="container">
+    <h2 class="reveal">Contáctanos</h2>
+    <form class="form reveal" onsubmit="event.preventDefault(); alert('¡Gracias! Te contactaremos pronto.');">
+      <div class="row">
+        <div>
+          <label for="nombre">Nombre</label>
+          <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required>
+        </div>
+        <div>
+          <label for="correo">Correo</label>
+          <input id="correo" name="correo" type="email" placeholder="tucorreo@ejemplo.com" required>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div>
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono" type="tel" placeholder="+58 ...">
+        </div>
+        <div>
+          <label for="tema">Interés</label>
+          <input id="tema" name="tema" type="text" placeholder="Seguros, inversiones, inmuebles...">
+        </div>
+      </div>
+      <div style="margin-top:10px">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente en qué podemos ayudarte"></textarea>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:10px; justify-content:flex-end">
+        <button class="btn ghost" type="reset">Limpiar</button>
+        <button class="btn primary" type="submit">Enviar</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="container footer-grid">
+    <div>
+      <div class="brand" style="margin-bottom:8px">
+        <img src="assets/logo-sigma.png" alt="Sigma" />
+        <strong class="wordmark" style="color:#fff">SIGMA</strong>
+      </div>
+      <p style="margin:6px 0 0; color:#c4d1ee">Expertos en gestión patrimonial y protección de activos. Desde 2010.</p>
+    </div>
+    <div>
+      <h4>Servicios</h4>
+      <div style="display:grid; gap:6px">
+        <a href="#unidades">Gestión Patrimonial</a>
+        <a href="#unidades">Corretaje de Seguros</a>
+        <a href="#unidades">Asesoría Inmobiliaria</a>
+        <a href="#unidades">Consultoría Empresarial</a>
+      </div>
+    </div>
+    <div>
+      <h4>Contacto</h4>
+      <div style="display:grid; gap:6px">
+        <a href="mailto:contacto@sigmavzla.com">contacto@sigmavzla.com</a>
+        <span>Tel.: +58 (000) 000-0000</span>
+        <span>Caracas • Valencia • Miami</span>
+      </div>
+    </div>
+  </div>
+  <div class="container copy">© 2025 Sigma. Todos los derechos reservados.</div>
+</footer>
+
+<script>
+/* Toggle menú móvil */
+const btn = document.getElementById('menuBtn');
+const panel = document.getElementById('mobilePanel');
+btn?.addEventListener('click', () => {
+  const open = panel.style.display === 'block';
+  panel.style.display = open ? 'none' : 'block';
+  btn.setAttribute('aria-expanded', String(!open));
+});
+
+/* Reveal básico al hacer scroll */
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('shown'); e.target.style.animationDelay = (Math.random()*0.2)+'s'; e.target.classList.remove('reveal'); } });
+},{ threshold: 0.12 });
+els.forEach(el => io.observe(el));
+</script>
+</body>
+</html>
