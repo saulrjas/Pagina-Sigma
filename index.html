@@ -1,6 +1,6 @@
 <!doctype html>
 <!-- =============================================================
-     PROYECTO: Sigma — Gestión Patrimonial, Inversiones, Inmuebles y Seguros
+     PROYECTO: Sigma – Gestión Patrimonial, Inversiones, Inmuebles y Seguros
      DESCRIPCIÓN: Landing con secciones hero, unidades, aliados, beneficios,
                   CTA, contacto y footer. Estructura comentada en español.
      NOTAS: Mantener este archivo como index.html en la carpeta raíz del sitio.
@@ -11,7 +11,7 @@
   <!-- ======================= HEAD (Metadatos): INICIO ======================= -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sigma — Gestión Patrimonial, Inversiones, Inmuebles y Seguros</title>
+  <title>Sigma – Gestión Patrimonial, Inversiones, Inmuebles y Seguros</title>
   <meta name="description" content="Soluciones financieras integrales para tu familia y tu empresa: gestión patrimonial, corretaje de seguros, asesoría inmobiliaria y bancaria.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='none' stroke='%23173D7A' stroke-width='8'/%3E%3C/svg%3E">
   <!-- ======================= HEAD (Metadatos): FIN ========================== -->
@@ -59,6 +59,7 @@
     gap:.6rem; padding:.9rem 1.2rem;
     border-radius:12px; border:1px solid transparent;
     font-weight:600; cursor:pointer; user-select:none;
+    text-decoration:none;
     transition:transform .05s ease, box-shadow .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
   }
   .btn:active{ transform:translateY(1px) }
@@ -84,7 +85,7 @@
      ========================= */
   header{
     position:sticky; top:0; z-index:60;
-    background:#E9F1F9; /* match de header claro */
+    background:#E9F1F9;
     backdrop-filter:saturate(120%) blur(8px);
     box-shadow: 0 2px 10px var(--ring);
   }
@@ -127,54 +128,495 @@
   }
   .mobile-panel a:hover{ background:#f2f6ff }
 
-  /* =========================
-     Hero (Banner principal)
-     ========================= */
-  .hero{
-    position:relative; 
-    min-height:78vh; 
-    display:grid; 
+  /* ====== NUEVO: Dropdown de login ====== */
+  .login-dropdown{ position:relative }
+  .login-dropdown .login-menu{
+    position:absolute; right:0; top:110%;
+    background:#fff; border:1px solid #e5ecf8; border-radius:12px;
+    box-shadow: var(--shadow);
+    padding:8px; display:none; min-width:160px; z-index:70;
+  }
+  .login-dropdown .login-option{
+    width:100%; text-align:left; padding:10px 12px; border:0; background:#fff; cursor:pointer;
+    border-radius:10px; font-weight:600; color:#1e2a3b;
+  }
+  .login-dropdown .login-option:hover{ background:#f2f6ff }
+  .login-dropdown.open .login-menu{ display:block }
+
+  /* ====== NUEVO: Modal simple ====== */
+  .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:100 }
+  .modal[aria-hidden="false"]{ display:flex }
+  .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.4); backdrop-filter: blur(2px) }
+  .modal-card{
+    position:relative; z-index:1; width:min(420px, 92%); background:#fff; border-radius:16px;
+    border:1px solid #e5ecf8; box-shadow: var(--shadow); padding:18px 18px 14px;
+  }
+  .modal-card h3{ margin:0 0 6px; color:#10253f }
+  .modal-card .muted{ color:#6b7280; margin:0 0 10px }
+  .modal-card input{ width:100%; padding:12px; border:1px solid #ccd6ea; border-radius:12px; margin:6px 0 }
+  .modal-card input:focus{ outline:none; border-color:#9fb5ee; box-shadow:0 0 0 4px #e9f0ff }
+
+  /* ====== NUEVO: Dashboard Socios ====== */
+  .dashboard{
+    display:none; 
+    min-height:100vh; 
+    background:#f8f9fa;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:9999;
+  }
+  .dashboard.active{ display:flex }
+  
+  /* Ocultar landing page cuando dashboard está activo */
+  body.dashboard-active {
+    overflow:hidden;
+  }
+  body.dashboard-active > *:not(.dashboard):not(script) {
+    display:none !important;
+  }
+  
+  /* Sidebar izquierdo */
+  .dashboard-sidebar{
+    width:260px; 
+    background:#fff; 
+    border-right:1px solid #e5e7eb;
+    padding:20px 0;
+    display:flex;
+    flex-direction:column;
+  }
+  .dashboard-sidebar .logo-area{
+    padding:0 20px 20px;
+    border-bottom:1px solid #e5e7eb;
+    margin-bottom:20px;
+  }
+  .dashboard-sidebar .logo-area img{
+    height:32px;
+  }
+  .dashboard-sidebar .user-info{
+    padding:12px 20px;
+    background:#f9fafb;
+    margin:0 12px 20px;
+    border-radius:8px;
+  }
+  .dashboard-sidebar .user-info strong{
+    display:block;
+    color:#1f2937;
+    font-size:.95rem;
+  }
+  .dashboard-sidebar .user-info span{
+    color:#6b7280;
+    font-size:.85rem;
+  }
+  .sidebar-menu{
+    flex:1;
+    padding:0 12px;
+  }
+  .sidebar-menu .menu-item{
+    display:flex;
     align-items:center;
-    background: linear-gradient(135deg, #0f2442 0%, #173D7A 40%, #1e52a3 100%);
-    color:#fff;
+    gap:12px;
+    padding:10px 16px;
+    border-radius:8px;
+    color:#4b5563;
+    cursor:pointer;
+    transition:all .2s;
+    margin-bottom:4px;
+    text-decoration:none;
+  }
+  .sidebar-menu .menu-item:hover{
+    background:#f3f4f6;
+    color:var(--primary);
+  }
+  .sidebar-menu .menu-item.active{
+    background:#eff6ff;
+    color:var(--primary);
+    font-weight:600;
+  }
+  .sidebar-menu .menu-item svg{
+    width:20px;
+    height:20px;
+    stroke:currentColor;
+  }
+  .sidebar-logout{
+    padding:12px 20px;
+    border-top:1px solid #e5e7eb;
+    margin-top:auto;
+  }
+  
+  /* Contenido principal */
+  .dashboard-main{
+    flex:1;
+    overflow-y:auto;
+  }
+  .dashboard-header{
+    background:#fff;
+    border-bottom:1px solid #e5e7eb;
+    padding:16px 32px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .dashboard-header h1{
+    margin:0;
+    font-size:1.5rem;
+    color:#1f2937;
+  }
+  .dashboard-content{
+    padding:32px;
+  }
+  
+  /* Vista de Calendario */
+  .calendar-view{
+    background:#fff;
+    border-radius:12px;
+    padding:24px;
+    box-shadow:0 1px 3px rgba(0,0,0,.1);
+  }
+  .calendar-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+  }
+  .calendar-header h2{
+    margin:0;
+    font-size:1.25rem;
+    color:#1f2937;
+  }
+  .calendar-nav{
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .calendar-nav button{
+    width:36px;
+    height:36px;
+    border:1px solid #d1d5db;
+    background:#fff;
+    border-radius:6px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:all .2s;
+  }
+  .calendar-nav button:hover{
+    background:#f9fafb;
+    border-color:var(--primary);
+  }
+  .calendar-nav button svg{
+    width:18px;
+    height:18px;
+    stroke:#6b7280;
+  }
+  .calendar-grid{
+    display:grid;
+    grid-template-columns:repeat(7, 1fr);
+    gap:1px;
+    background:#e5e7eb;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .calendar-day-header{
+    background:#f9fafb;
+    padding:12px;
+    text-align:center;
+    font-weight:600;
+    font-size:.85rem;
+    color:#6b7280;
+    text-transform:uppercase;
+  }
+  .calendar-day{
+    background:#fff;
+    min-height:100px;
+    padding:8px;
+    position:relative;
+    cursor:pointer;
+    transition:background .2s;
+  }
+  .calendar-day:hover{
+    background:#f9fafb;
+  }
+  .calendar-day.other-month{
+    background:#fafafa;
+    color:#9ca3af;
+  }
+  .calendar-day.today{
+    background:#eff6ff;
+  }
+  .calendar-day .day-number{
+    font-weight:600;
+    color:#1f2937;
+    margin-bottom:4px;
+  }
+  .calendar-day.other-month .day-number{
+    color:#9ca3af;
+  }
+  .calendar-event{
+    background:#dbeafe;
+    color:#1e40af;
+    font-size:.75rem;
+    padding:4px 6px;
+    border-radius:4px;
+    margin-top:4px;
+    border-left:3px solid #3b82f6;
+    cursor:pointer;
+  }
+  .calendar-event:hover{
+    background:#bfdbfe;
+  }
+  .calendar-event.pending{
+    background:#fef3c7;
+    color:#92400e;
+    border-left-color:#f59e0b;
+  }
+  .calendar-event.approved{
+    background:#d1fae5;
+    color:#065f46;
+    border-left-color:#10b981;
+  }
+  .calendar-event.rejected{
+    background:#fee2e2;
+    color:#991b1b;
+    border-left-color:#ef4444;
+  }
+
+  /* Vista de reservas (legacy - mantener por compatibilidad) */
+  .dash-header{
+    background:#fff; 
+    border-radius:16px; 
+    padding:24px; 
+    margin-bottom:24px;
+    box-shadow:var(--shadow); 
+    display:flex; 
+    justify-content:space-between; 
+    align-items:center;
+  }
+  .dash-content{ 
+    background:#fff; 
+    border-radius:16px; 
+    padding:24px; 
+    box-shadow:var(--shadow); 
+    margin-bottom:20px;
+  }
+  /* ====== NUEVO: Dashboard de Operaciones ====== */
+  #operacionesDashboard {
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:9999;
+    background:#f8f9fa;
+    overflow-y:auto;
+    padding:0;
+  }
+  #operacionesDashboard .container {
+    padding:32px;
+  }
+  .reserva-card.pendiente{ border-left:4px solid #f59e0b }
+  .reserva-card.aprobada{ border-left:4px solid #10b981 }
+  .reserva-card.rechazada{ border-left:4px solid #ef4444 }
+  .badge{
+    display:inline-block; padding:4px 10px; border-radius:6px; font-size:.85rem; font-weight:600;
+    margin-left:8px;
+  }
+  .badge.pendiente{ background:#fef3c7; color:#92400e }
+  .badge.aprobada{ background:#d1fae5; color:#065f46 }
+  .badge.rechazada{ background:#fee2e2; color:#991b1b }
+
+  /* =========================
+     Market Ticker (Barra de cotizaciones)
+     ========================= */
+  .market-ticker {
+    background: linear-gradient(90deg, #0a1929 0%, #0d2642 100%);
+    border-top: 1px solid rgba(58,181,194,0.2);
+    border-bottom: 1px solid rgba(58,181,194,0.2);
     overflow: hidden;
+    position: relative;
+    padding: 8px 0;
+    font-family: 'Courier New', monospace;
   }
-  /* Formas geométricas con blur */
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: 10%;
-    right: 5%;
-    width: 500px;
-    height: 500px;
-    background: linear-gradient(135deg, rgba(58,181,194,0.3), rgba(37,99,235,0.2));
-    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-    filter: blur(40px);
-    animation: morph 15s ease-in-out infinite;
-    opacity: 0.6;
+  .ticker-track { 
+    display: flex; 
+    gap: 40px; 
+    animation: tickerScroll 40s linear infinite; 
+    width: max-content; 
   }
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: 10%;
-    left: 10%;
-    width: 400px;
-    height: 400px;
-    background: linear-gradient(225deg, rgba(212,175,55,0.25), rgba(58,181,194,0.15));
-    border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%;
-    filter: blur(40px);
-    animation: morph 12s ease-in-out infinite reverse;
-    opacity: 0.5;
+  .ticker-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    padding: 0 20px; 
+    white-space: nowrap; 
+    border-right: 1px solid rgba(255,255,255,0.1); 
   }
-  .hero .grid-pattern {
+  .ticker-item:last-child { border-right: none; }
+  .ticker-item .symbol { 
+    font-weight: 700; 
+    color: #e0e7ff; 
+    font-size: 0.85rem; 
+    letter-spacing: 0.5px; 
+  }
+  .ticker-item .price { 
+    color: #cbd5e1; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+  }
+  .ticker-item .change { 
+    font-size: 0.85rem; 
+    font-weight: 600; 
+    padding: 2px 8px; 
+    border-radius: 4px; 
+  }
+  .ticker-item .change.positive { 
+    color: #10b981; 
+    background: rgba(16,185,129,0.1); 
+  }
+  .ticker-item .change.positive::before { content: '▲ '; }
+  .ticker-item .change.negative { 
+    color: #ef4444; 
+    background: rgba(239,68,68,0.1); 
+  }
+  .ticker-item .change.negative::before { content: '▼ '; }
+
+  /* =========================
+     Hero Carousel (Banner principal con 4 imágenes)
+     ========================= */
+  .hero-carousel{
+    --offset: 110px;
+    height: calc(100vh - var(--offset));
+    min-height: 520px;
+    position: relative;
+    overflow: hidden; 
+    color:#fff; 
+    background:#0f2442;
+  }
+  .hero-carousel .slides{
+    position: relative; 
+    width:100%; 
+    height:100%;
+  }
+  .hero-carousel .slide {
     position: absolute;
     inset: 0;
-    background: 
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 100px 100px;
-    z-index: 0;
+    opacity: 0;
+    pointer-events: none;
+    background-size: cover;
+    background-position: center 35%;
+    background-repeat: no-repeat;
+    transition: opacity .6s ease, transform .6s ease;
   }
+  .hero-carousel .slide.active{
+    opacity:1; 
+    pointer-events:auto; 
+    transform: scale(1);
+  }
+  .hero-carousel .overlay{
+    position:absolute; 
+    inset:0;
+    background: linear-gradient(120deg, rgba(9,29,55,.60), rgba(23,61,122,.60));
+  }
+  .hero-carousel .content{
+    position: relative; 
+    z-index: 1; 
+    height: 100%;
+    display: flex; 
+    align-items: center;
+  }
+  .hero-carousel .inner{
+    width:min(1100px, 92%);
+    margin-inline:auto;
+    padding: clamp(72px, 8vh, 120px) 20px;
+    padding-left: clamp(24px, 6vw, 96px);
+    text-align:left;
+    margin-top:0;
+  }
+  .hero-carousel .kicker{
+    display:inline-flex; 
+    align-items:center; 
+    gap:.6rem;
+    padding:.6rem 1rem; 
+    border-radius:999px;
+    background: rgba(255,255,255,0.12); 
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-weight:600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .hero-carousel h1{
+    margin:0 0 10px; 
+    font-size: clamp(2rem, 3.6vw + .8rem, 3.2rem);
+    line-height: 1.15;
+  }
+  .hero-carousel p{ 
+    max-width: 800px; 
+    font-size:1.1rem; 
+    opacity:.95;
+  }
+  .hero-carousel .actions{ 
+    display:flex; 
+    gap:12px; 
+    margin-top:16px; 
+    flex-wrap:wrap;
+  }
+
+  /* Flechas navegación */
+  .hero-carousel .nav{
+    position:absolute; 
+    top:50%; 
+    transform:translateY(-50%);
+    width:46px; 
+    height:46px; 
+    border-radius:12px;
+    display:grid; 
+    place-items:center; 
+    border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,.15); 
+    backdrop-filter: blur(6px);
+    cursor:pointer; 
+    z-index:2;
+  }
+  .hero-carousel .nav:hover{ background:rgba(255,255,255,.25) }
+  .hero-carousel .prev{ left:20px } 
+  .hero-carousel .next{ right:20px }
+  .hero-carousel .nav svg{ width:24px; height:24px; stroke:#fff }
+
+  /* Puntos indicadores */
+  .hero-carousel .dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    z-index: 2;
+  }
+  .hero-carousel .dot {
+    width: 16px;
+    height: 16px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    transform: scale(0.6);
+    transform-origin: center;
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.2s ease;
+    flex-shrink: 0;
+  }
+  .hero-carousel .dot.active {
+    background: #fff;
+    transform: scale(0.8);
+  }
+
   @keyframes morph {
     0%, 100% { 
       border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
@@ -185,21 +627,6 @@
       transform: rotate(180deg) scale(1.1);
     }
   }
-  .hero .inner{
-    position:relative; z-index:1; padding-block:84px; 
-  }
-  .hero .kicker{
-    display:inline-flex; align-items:center; gap:.6rem;
-    padding:.5rem .8rem; border-radius:999px;
-    background:rgba(255,255,255,.16); backdrop-filter:blur(4px);
-    font-weight:600;
-  }
-  .hero h1{
-    margin:18px 0 8px; font-size: clamp(2rem, 3.6vw + .8rem, 3.2rem);
-    line-height:1.15; letter-spacing:.2px;
-  }
-  .hero p{ max-width:720px; font-size:1.05rem; opacity:.95 }
-  .hero .actions{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
 
   /* =========================
      About / Stats
@@ -242,18 +669,57 @@
      Partners / Allies (Carrusel)
      ========================= */
   .partners{
-    background:linear-gradient(180deg,#ffffff,#f3f7ff);
-    padding:54px 0;
+    padding: 56px 0 72px;
+    background: linear-gradient(#f4f9ff, #eef5ff);
   }
-  .partners h2{ text-align:center; margin:0 0 14px; color:#0f2b58 }
-  .partner-row{
-    display:flex; gap:28px; flex-wrap:wrap; align-items:center; justify-content:center;
-    margin-top:8px;
+  .partners .title {
+    text-align: center;
+    font-size: clamp(1.35rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: #0b2a5a;
+    margin: 0 0 .25rem;
   }
-  .partner-row img{
-    height:38px; width:auto; opacity:.9; filter:grayscale(10%);
+  .partners .subtitle {
+    text-align: center;
+    color: #475569;
+    margin: 0 0 1.75rem;
   }
-
+  .logo-ticker {
+    --logo-h: 40px;
+    --gap: 48px;
+    --speed: 30s;
+    overflow: hidden;
+    position: relative;
+    padding: 12px 0;
+    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  }
+  .logo-track {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    animation: tickerScroll var(--speed) linear infinite;
+    will-change: transform;
+  }
+  .logo-track li {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding-right: var(--gap);
+  }
+  .logo-track img {
+    height: var(--logo-h);
+    width: auto;
+    display: block;
+    object-fit: contain;
+    filter: grayscale(100%) contrast(1.05) opacity(.85);
+    transition: filter .2s ease;
+  }
+  .logo-track img:hover { filter: grayscale(0%) opacity(1); }
+  @keyframes tickerScroll { 0%{ transform: translateX(0);} 100%{ transform: translateX(-66.666%);} }
+  
   /* =========================
      Benefits
      ========================= */
@@ -318,6 +784,7 @@
   footer a{ color:#cbd8ff; text-decoration:none }
   footer a:hover{ text-decoration:underline }
   .copy{ text-align:center; color:#9bb0d8; margin-top:16px; font-size:.95rem }
+  .footer-logo { width: 60px !important; height: auto !important; opacity: 0.95; display: block; }
 
   /* =========================
      Responsive
@@ -331,270 +798,21 @@
     .footer-grid{ grid-template-columns: 1fr }
   }
   @media (max-width: 640px){
-    .brand .wordmark{ display:none } /* en móvil dejamos solo el isotipo o logo compacto */
     .stat h3{ font-size:1.7rem }
+    .hero-carousel .nav{ display:none }
+    .hero-carousel h1{ font-size: clamp(1.6rem, 2.8vw + .9rem, 2.2rem) }
+  }
+  @media (max-width: 768px) {
+    .hero-carousel .nav { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { 
+    .logo-track { animation: none; }
+    .ticker-track { animation: none; }
   }
 
   /* Simple reveal animation */
   .reveal{ opacity:0; transform:translateY(12px); animation:reveal .7s ease forwards }
   @keyframes reveal{ to{ opacity:1; transform:none } }
-
-  /* ====== Partners: carrusel de logos ====== */
-  .partners {
-    padding: 56px 0 72px;
-    background: linear-gradient(#f4f9ff, #eef5ff);
-  }
-  .partners .title {
-    text-align: center;
-    font-size: clamp(1.35rem, 2.2vw, 1.8rem);
-    font-weight: 800;
-    color: #0b2a5a;
-    margin: 0 0 .25rem;
-  }
-  .partners .subtitle {
-    text-align: center;
-    color: #475569;
-    margin: 0 0 1.75rem;
-  }
-  .logo-ticker {
-    --logo-h: 40px;
-    --gap: 48px;
-    --speed: 30s;  /* un poco más lento para que se vea más suave */
-    overflow: hidden;
-    position: relative;
-    padding: 12px 0;
-    mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
-  }
-  .logo-track {
-    display: flex;
-    align-items: center;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    animation: tickerScroll var(--speed) linear infinite;
-    will-change: transform;
-  }
-  .logo-track li {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    padding-right: var(--gap);  /* el gap ahora es padding del li */
-  }
-  .logo-track img {
-    height: var(--logo-h);
-    width: auto;
-    display: block;
-    object-fit: contain;
-    filter: grayscale(100%) contrast(1.05) opacity(.85);
-    transition: filter .2s ease;
-  }
-  .logo-track img:hover { filter: grayscale(0%) opacity(1); }
-  @keyframes tickerScroll { 0%{ transform: translateX(0);} 100%{ transform: translateX(-66.666%);} }
-  @media (prefers-reduced-motion: reduce) { .logo-track { animation: none; } }
-
-  /* Elemento flotante adicional - esquina superior izquierda */
-  .hero .inner::before {
-    content: '';
-    position: absolute;
-    top: -100px;
-    left: -100px;
-    width: 300px;
-    height: 300px;
-    background: linear-gradient(135deg, rgba(58,181,194,0.15), transparent);
-    border-radius: 50%;
-    filter: blur(60px);
-    animation: float 18s ease-in-out infinite;
-    z-index: -1;
-  }
-  .hero .kicker{
-    display:inline-flex; 
-    align-items:center; 
-    gap:.6rem;
-    padding:.6rem 1rem; 
-    border-radius:999px;
-    background: rgba(255,255,255,0.12); 
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    font-weight:600;
-    font-size: 0.9rem;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  }
-  .btn.primary { position: relative; overflow: hidden; }
-  .btn.primary::before {
-    content: '';
-    position: absolute;
-    top: 0; left: -100%; width: 100%; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s;
-  }
-  .btn.primary:hover::before { left: 100%; }
-
-  /* ====== Market Ticker ====== */
-  .market-ticker {
-    background: linear-gradient(90deg, #0a1929 0%, #0d2642 100%);
-    border-top: 1px solid rgba(58,181,194,0.2);
-    border-bottom: 1px solid rgba(58,181,194,0.2);
-    overflow: hidden;
-    position: relative;
-    padding: 8px 0;
-    font-family: 'Courier New', monospace;
-  }
-  .ticker-track { display: flex; gap: 40px; animation: tickerScroll 40s linear infinite; width: max-content; }
-  .ticker-item { display: flex; align-items: center; gap: 12px; padding: 0 20px; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.1); }
-  .ticker-item:last-child { border-right: none; }
-  .ticker-item .symbol { font-weight: 700; color: #e0e7ff; font-size: 0.85rem; letter-spacing: 0.5px; }
-  .ticker-item .price { color: #cbd5e1; font-size: 0.9rem; font-weight: 600; }
-  .ticker-item .change { font-size: 0.85rem; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
-  .ticker-item .change.positive { color: #10b981; background: rgba(16,185,129,0.1); }
-  .ticker-item .change.positive::before { content: '▲ '; }
-  .ticker-item .change.negative { color: #ef4444; background: rgba(239,68,68,0.1); }
-  .ticker-item .change.negative::before { content: '▼ '; }
-  @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
-  @media (prefers-reduced-motion: reduce) { .ticker-track { animation: none; } }
- /* =========================
-   HERO – CARRUSEL BANNER PRINCIPAL: INICIO
-   ========================= */
-.hero-carousel{
-  --offset: 110px;                  /* header + ticker (ajusta si difiere) */
-  height: calc(100vh - var(--offset));
-  min-height: 520px;                /* respaldo en pantallas bajas */
-  position: relative;
-  overflow: hidden; color:#fff; background:#0f2442;
-}
-.hero-carousel .slides{
-  position: relative; width:100%; height:100%;
-}
-.hero-carousel .slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  background-size: cover; /* más pequeño = menos zoom (cover sin estirar) */
-  background-position: center 35%;
-  background-repeat: no-repeat;
-  transition: opacity .6s ease, transform .6s ease;
-}
-.hero-carousel .slide.active{
-  opacity:1; pointer-events:auto; transform: scale(1);
-}
-.hero-carousel .overlay{
-  position:absolute; inset:0;
-  /* Tinte azul más fuerte para legibilidad */
-  background: linear-gradient(120deg, rgba(9,29,55,.60), rgba(23,61,122,.60));
-}
-.hero-carousel .content{
-  position: relative; z-index: 1; height: 100%;
-  display: flex; align-items: center; /* centra vertical */
-}
-.hero-carousel .inner{
-  width:min(1100px, 92%);
-  margin-inline:auto;
-  /* padding top/bottom generoso + separación del borde izquierdo */
-  padding: clamp(72px, 8vh, 120px) 20px;
-  padding-left: clamp(24px, 6vw, 96px);
-  text-align:left;
-  margin-top:0;
-}
-.hero-carousel h1{
-  margin:0 0 10px; font-size: clamp(2rem, 3.6vw + .8rem, 3.2rem);
-  line-height: 1.15;
-}
-.hero-carousel p{ max-width: 800px; font-size:1.1rem; opacity:.95 }
-.hero-carousel .actions{ display:flex; gap:12px; margin-top:16px; flex-wrap:wrap }
-
-/* Flechas tipo Netflix */
-.hero-carousel .nav{
-  position:absolute; top:50%; transform:translateY(-50%);
-  width:46px; height:46px; border-radius:12px;
-  display:grid; place-items:center; border:1px solid rgba(255,255,255,.35);
-  background:rgba(255,255,255,.15); backdrop-filter: blur(6px);
-  cursor:pointer; z-index:2;
-}
-.hero-carousel .nav:hover{ background:rgba(255,255,255,.25) }
-.hero-carousel .prev{ left:20px } .hero-carousel .next{ right:20px }
-.hero-carousel .nav svg{ width:24px; height:24px; stroke:#fff }
-
-/* Puntos indicadores */
-.hero-carousel .dots {
-  position: absolute;
-  bottom: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  z-index: 2;
-}
-
-.hero-carousel .dot {
-  width: 16px; /* se mantiene el tamaño base */
-  height: 16px;
-  aspect-ratio: 1 / 1;
-  border-radius: 50%;
-  transform: scale(0.6); /* 👈 reduce visualmente sin deformar */
-  transform-origin: center; /* mantiene el centro */
-  background: rgba(255, 255, 255, 0.45);
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
-  flex-shrink: 0;
-}
-
-.hero-carousel .dot.active {
-  background: #fff;
-  transform: scale(0.8); /* ligeramente más grande el activo */
-}
-
-
-/* Responsive */
-@media (max-width: 640px){
-  .hero-carousel .nav{ width:40px; height:40px }
-  .hero-carousel h1{ font-size: clamp(1.6rem, 2.8vw + .9rem, 2.2rem) }
-}
-/* =========================
-   HERO – CARRUSEL BANNER PRINCIPAL: FIN
-   ========================= */
-
-   /* ======== Ajuste de flechas en versión móvil ======== */
-@media (max-width: 768px) {
-  .hero-carousel .nav { display: none; }
-}
-
-.footer-logo {
-  width: 60px !important;   /* fuerza el tamaño del logo */
-  height: auto !important;
-  opacity: 0.95;
-  display: block;
-}
-/* ====== Dropdown de login ====== */
-.login-dropdown{ position:relative }
-.login-dropdown .login-menu{
-  position:absolute; right:0; top:110%;
-  background:#fff; border:1px solid #e5ecf8; border-radius:12px;
-  box-shadow: var(--shadow);
-  padding:8px; display:none; min-width:160px; z-index:70;
-}
-.login-dropdown .login-option{
-  width:100%; text-align:left; padding:10px 12px; border:0; background:#fff; cursor:pointer;
-  border-radius:10px; font-weight:600; color:#1e2a3b;
-}
-.login-dropdown .login-option:hover{ background:#f2f6ff }
-.login-dropdown.open .login-menu{ display:block }
-
-/* ====== Modal simple ====== */
-.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:100 }
-.modal[aria-hidden="false"]{ display:flex }
-.modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.4); backdrop-filter: blur(2px) }
-.modal-card{
-  position:relative; z-index:1; width:min(420px, 92%); background:#fff; border-radius:16px;
-  border:1px solid #e5ecf8; box-shadow: var(--shadow); padding:18px 18px 14px;
-}
-.modal-card h3{ margin:0 0 6px; color:#10253f }
-.modal-card .muted{ color:#6b7280; margin:0 0 10px }
-.modal-card input{ width:100%; padding:12px; border:1px solid #ccd6ea; border-radius:12px; margin:6px 0 }
-.modal-card input:focus{ outline:none; border-color:#9fb5ee; box-shadow:0 0 0 4px #e9f0ff }
 
   </style>
   <!-- =============================== CSS: FIN ============================== -->
@@ -618,12 +836,23 @@
       </nav>
 
       <div class="cta-wrap">
-        <a class="btn primary" href="https://wa.me/584123169718?text=Hola,%20me%20gustar%C3%ADa%20contactar%20un%20asesor" target="_blank" rel="noopener noreferrer">Contáctanos</a>
+        <a class="btn primary" href="https://wa.me/584123169718?text=Hola,%20me%20gustaría%20contactar%20un%20asesor" target="_blank" rel="noopener noreferrer" style="background:var(--primary); color:#fff">Contáctanos</a>
+        
+        <!-- ====== NUEVO: Botón de sesión con menú ====== -->
+        <div class="login-dropdown">
+          <button class="btn" id="btnLoginMenu" aria-expanded="false" style="background:#fff; color:var(--primary); border:1.5px solid var(--primary)">Iniciar sesión ▾</button>
+          <div class="login-menu" id="loginMenu" role="menu">
+            <button data-role="socio" class="login-option">Socios</button>
+            <button data-role="cliente" class="login-option">Clientes</button>
+          </div>
+        </div>
+
         <button class="menu-btn" id="menuBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobilePanel">
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2a3b55" stroke-width="2" stroke-linecap="round"/></svg>
         </button>
       </div>
     </div>
+    
     <!-- Panel móvil -->
     <div class="mobile-panel" id="mobilePanel" role="region" aria-label="Panel de navegación móvil">
       <div class="links">
@@ -634,29 +863,10 @@
         <a href="#contacto">Contacto</a>
       </div>
     </div>
-
-    <!-- ====== NAV: botón de sesión con menú ====== -->
-<div class="cta-wrap">
-  <a class="btn primary" href="https://wa.me/584123169718?text=Hola,%20me%20gustaría%20contactar%20un%20asesor" target="_blank" rel="noopener noreferrer">Contáctanos</a>
-
-  <!-- Botón de sesión -->
-  <div class="login-dropdown">
-    <button class="btn ghost" id="btnLoginMenu" aria-expanded="false">Iniciar sesión ▾</button>
-    <div class="login-menu" id="loginMenu" role="menu">
-      <button data-role="socio" class="login-option">Socios</button>
-      <button data-role="cliente" class="login-option">Clientes</button>
-    </div>
-  </div>
-
-  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2a3b55" stroke-width="2" stroke-linecap="round"/></svg>
-  </button>
-</div>
-
   </header>
   <!-- ========================= HEADER / NAV: FIN ========================= -->
 
-  <!-- ============ BARRA DE COTIZACIONES DE BOLSA FICTICIA: INICIO ========= -->
+  <!-- ============ BARRA DE COTIZACIONES DE BOLSA: INICIO ========= -->
   <div class="market-ticker" aria-label="Barra de cotizaciones de ejemplo">
     <div class="ticker-track" aria-hidden="false">
       <div class="ticker-item">
@@ -710,87 +920,107 @@
       <div class="ticker-item"><span class="symbol">BTC-USD</span><span class="price">$67,234</span><span class="change positive">+4.21%</span></div>
     </div>
   </div>
-  <!-- ============= BARRA DE COTIZACIONES DE BOLSA FICTICIA: FIN =========== -->
+  <!-- ============= BARRA DE COTIZACIONES DE BOLSA: FIN =========== -->
 
-<!-- ===================== HERO / CARRUSEL: INICIO ===================== -->
-<section id="inicio" class="hero-carousel" role="banner" aria-label="Portada – Carrusel">
-  <button class="nav prev" aria-label="Slide anterior">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
-  <button class="nav next" aria-label="Slide siguiente">
-    <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-  </button>
+  <!-- ===================== HERO / CARRUSEL: INICIO ===================== -->
+  <section id="inicio" class="hero-carousel" role="banner" aria-label="Portada – Carrusel">
+    <button class="nav prev" aria-label="Slide anterior">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 19l-7-7 7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="nav next" aria-label="Slide siguiente">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
 
-  <div class="slides" id="heroSlides">
-    <!-- Slide 1 – Sigma Global (Asesoría Empresarial) -->
-    <article class="slide active" style="background-image:url('assets/hero/sigma-global.jpg')">
-      <div class="overlay"></div>
-      <div class="content">
-        <div class="inner">
-          <span class="kicker">Sigma Global</span>
-          <h1>Impulsa tu empresa<br>con asesoría estratégica</h1>
-          <p>Finanzas, eficiencia operativa y crecimiento sostenible con expertos a tu lado.</p>
-          <div class="actions">
-            <a href="#unidades" class="btn primary">Ver unidad</a>
-            <a href="#contacto" class="btn ghost">Agenda consulta</a>
+    <div class="slides" id="heroSlides">
+      <!-- Slide 1 – Sigma Global -->
+      <article class="slide active" style="background-image:url('assets/hero/sigma-global.jpg')">
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="inner">
+            <span class="kicker">Sigma Global</span>
+            <h1>Impulsa tu empresa<br>con asesoría estratégica</h1>
+            <p>Finanzas, eficiencia operativa y crecimiento sostenible con expertos a tu lado.</p>
+            <div class="actions">
+              <a href="#unidades" class="btn primary">Ver unidad</a>
+              <a href="#contacto" class="btn ghost">Agenda consulta</a>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- Slide 2 – Gestión Patrimonial -->
-    <article class="slide" style="background-image:url('assets/hero/patrimonial.jpg')">
-      <div class="overlay"></div>
-      <div class="content">
-        <div class="inner">
-          <span class="kicker">Gestión Patrimonial</span>
-          <h1>Planifica, preserva y crece<br>tu patrimonio</h1>
-          <p>Portafolios y banca internacional con enfoque de largo plazo.</p>
-          <div class="actions">
-            <a href="#unidades" class="btn primary">Ver unidad</a>
-            <a href="#contacto" class="btn ghost">Agenda consulta</a>
+      <!-- Slide 2 – Gestión Patrimonial -->
+      <article class="slide" style="background-image:url('assets/hero/patrimonial.jpg')">
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="inner">
+            <span class="kicker">Gestión Patrimonial</span>
+            <h1>Planifica, preserva y crece<br>tu patrimonio</h1>
+            <p>Portafolios y banca internacional con enfoque de largo plazo.</p>
+            <div class="actions">
+              <a href="#unidades" class="btn primary">Ver unidad</a>
+              <a href="#contacto" class="btn ghost">Agenda consulta</a>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- Slide 3 – Sigma Inmobiliaria -->
-    <article class="slide" style="background-image:url('assets/hero/inmobiliaria.jpg')">
-      <div class="overlay"></div>
-      <div class="content">
-        <div class="inner">
-          <span class="kicker">Sigma Inmobiliaria</span>
-          <h1>Invierte con criterio<br>en bienes raíces</h1>
-          <p>Compra, venta y administración con visión de inversión.</p>
-          <div class="actions">
-            <a href="#unidades" class="btn primary">Ver unidad</a>
-            <a href="#contacto" class="btn ghost">Agenda consulta</a>
+      <!-- Slide 3 – Sigma Inmobiliaria -->
+      <article class="slide" style="background-image:url('assets/hero/inmobiliaria.jpg')">
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="inner">
+            <span class="kicker">Sigma Inmobiliaria</span>
+            <h1>Invierte con criterio<br>en bienes raíces</h1>
+            <p>Compra, venta y administración con visión de inversión.</p>
+            <div class="actions">
+              <a href="#unidades" class="btn primary">Ver unidad</a>
+              <a href="#contacto" class="btn ghost">Agenda consulta</a>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
 
-    <!-- Slide 4 – Corretaje de Seguros -->
-    <article class="slide" style="background-image:url('assets/hero/seguros.png')">
-      <div class="overlay"></div>
-      <div class="content">
-        <div class="inner">
-          <span class="kicker">Sigma Corretaje de Seguros</span>
-          <h1>A tu lado en cada siniestro,<br>como tu familia</h1>
-          <p>Salud, vida y viajes. Acompañamiento 24/7 ante siniestros.</p>
-          <div class="actions">
-            <a href="#unidades" class="btn primary">Ver unidad</a>
-            <a href="#contacto" class="btn ghost">Agenda consulta</a>
+      <!-- Slide 4 – Corretaje de Seguros -->
+      <article class="slide" style="background-image:url('assets/hero/seguros.png')">
+        <div class="overlay"></div>
+        <div class="content">
+          <div class="inner">
+            <span class="kicker">Sigma Corretaje de Seguros</span>
+            <h1>A tu lado en cada siniestro,<br>como tu familia</h1>
+            <p>Salud, vida y viajes. Acompañamiento 24/7 ante siniestros.</p>
+            <div class="actions">
+              <a href="#unidades" class="btn primary">Ver unidad</a>
+              <a href="#contacto" class="btn ghost">Agenda consulta</a>
+            </div>
           </div>
         </div>
-      </div>
-    </article>
+      </article>
+    </div>
+
+    <!-- Puntos indicadores -->
+    <div class="dots" id="heroDots" aria-label="Indicadores de slides"></div>
+  </section>
+  <!-- ====================== HERO / CARRUSEL: FIN ====================== -->
+
+  <!-- ====== NUEVO: Modal de login ====== -->
+  <div class="modal" id="loginModal" aria-hidden="true">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <h3 id="loginTitle">Ingresar</h3>
+      <p id="loginSubtitle" class="muted">Selecciona rol</p>
+      <form id="loginForm">
+        <label>Correo</label>
+        <input type="email" id="loginEmail" required placeholder="correo@sigma.com" />
+        <label>Contraseña</label>
+        <input type="password" id="loginPass" required placeholder="••••••••" />
+        <div id="loginError" style="color:#ef4444; font-size:.9rem; margin-top:8px"></div>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px">
+          <button type="button" class="btn" onclick="closeModal()" style="background:transparent; color:var(--primary); border:1.5px solid var(--primary)">Cancelar</button>
+          <button type="submit" class="btn primary">Ingresar</button>
+        </div>
+      </form>
+    </div>
   </div>
-
-  <!-- Puntos (se crean por JS si no los agregas a mano) -->
-  <div class="dots" id="heroDots" aria-label="Indicadores de slides"></div>
-</section>
-<!-- ====================== HERO / CARRUSEL: FIN ====================== -->
 
 
   <!-- ======================== ABOUT / STATS: INICIO ======================= -->
@@ -883,7 +1113,7 @@
         <div class="benefit reveal"><h4>Jubilación tranquila</h4><p>Plan de retiro con ingresos sostenibles y protección del capital.</p></div>
         <div class="benefit reveal"><h4>Comprar vivienda</h4><p>Estrategia de ahorro e inversión alineada a tu plazo y moneda.</p></div>
         <div class="benefit reveal"><h4>Educación para hijos</h4><p>Fondos designados y seguros que protegen el proyecto familiar.</p></div>
-        <div class="benefit reveal"><h4>Seguridad financiera</h4><p>Políticas de vida y salud con atención de siniestros 24/7.</p></div>
+        <div class="benefit reveal"><h4>Seguridad financiera</h4><p>Pólizas de vida y salud con atención de siniestros 24/7.</p></div>
         <div class="benefit reveal"><h4>Ingresos pasivos</h4><p>Portafolios de bonos y modelos por perfil de riesgo.</p></div>
         <div class="benefit reveal"><h4>Viajar y crecer</h4><p>Coberturas de viaje, banca internacional y liquidez global.</p></div>
       </div>
@@ -931,7 +1161,7 @@
           <textarea id="mensaje" name="mensaje" placeholder="Cuéntanos brevemente en qué podemos ayudarte"></textarea>
         </div>
         <div style="margin-top:14px; display:flex; gap:10px; justify-content:flex-end">
-          <button class="btn ghost" type="reset">Limpiar</button>
+          <button class="btn" type="reset" style="background:transparent; color:var(--primary); border:1.5px solid var(--primary)">Limpiar</button>
           <button class="btn primary" type="submit">Enviar</button>
         </div>
       </form>
@@ -971,6 +1201,161 @@
   </footer>
   <!-- ================================= FOOTER: FIN ======================= -->
 
+  <!-- ====== NUEVO: DASHBOARD DE SOCIOS: INICIO ====== -->
+  <div class="dashboard" id="socioDashboard">
+    <!-- Sidebar izquierdo -->
+    <aside class="dashboard-sidebar">
+      <div class="logo-area">
+        <img src="assets/logo-sigma.png" alt="Sigma" />
+      </div>
+      
+      <div class="user-info">
+        <strong id="userName">Carlos García</strong>
+        <span>Asesor</span>
+      </div>
+
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active" data-view="calendario">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke-width="2"/><line x1="16" y1="2" x2="16" y2="6" stroke-width="2"/><line x1="8" y1="2" x2="8" y2="6" stroke-width="2"/><line x1="3" y1="10" x2="21" y2="10" stroke-width="2"/></svg>
+          Calendario
+        </a>
+        <a href="#" class="menu-item" data-view="reservas">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" stroke-width="2"/><polyline points="9 22 9 12 15 12 15 22" stroke-width="2"/></svg>
+          Mis Reservas
+        </a>
+        <a href="#" class="menu-item" data-view="perfil">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke-width="2"/><circle cx="12" cy="7" r="4" stroke-width="2"/></svg>
+          Mi Perfil
+        </a>
+      </nav>
+
+      <div class="sidebar-logout">
+        <button class="btn" onclick="logout()" style="width:100%; background:transparent; color:#ef4444; border:1.5px solid #ef4444">
+          Cerrar sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="dashboard-main">
+      <header class="dashboard-header">
+        <h1 id="dashboardTitle">Calendario de Salas</h1>
+        <button class="btn primary" onclick="showNewReserva()">+ Nueva Reserva</button>
+      </header>
+
+      <div class="dashboard-content">
+        <!-- Vista de Calendario -->
+        <div id="calendarioView" class="view-content">
+          <div class="calendar-view">
+            <div class="calendar-header">
+              <h2 id="currentMonth">Marzo 2025</h2>
+              <div class="calendar-nav">
+                <button onclick="prevMonth()">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="15 18 9 12 15 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <button onclick="nextMonth()">
+                  <svg viewBox="0 0 24 24" fill="none"><polyline points="9 18 15 12 9 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+            </div>
+            
+            <div class="calendar-grid" id="calendarGrid">
+              <!-- Headers de días -->
+              <div class="calendar-day-header">Lun</div>
+              <div class="calendar-day-header">Mar</div>
+              <div class="calendar-day-header">Mié</div>
+              <div class="calendar-day-header">Jue</div>
+              <div class="calendar-day-header">Vie</div>
+              <div class="calendar-day-header">Sáb</div>
+              <div class="calendar-day-header">Dom</div>
+              <!-- Los días se generan dinámicamente -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Vista de Mis Reservas -->
+        <div id="reservasView" class="view-content" style="display:none">
+          <div style="background:#fff; border-radius:12px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <h3 style="margin:0 0 20px">Mis Reservas</h3>
+            
+            <!-- Formulario de nueva reserva -->
+            <div id="reservaForm" style="display:none; background:#f9fafb; padding:20px; border-radius:12px; margin-bottom:20px">
+              <h4 style="margin:0 0 16px">Solicitar Reserva</h4>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px">
+                <div>
+                  <label style="font-weight:600; display:block; margin-bottom:6px">Fecha</label>
+                  <input type="date" id="reservaFecha" style="width:100%; padding:10px; border:1px solid #ccd6ea; border-radius:8px" required />
+                </div>
+                <div>
+                  <label style="font-weight:600; display:block; margin-bottom:6px">Sala</label>
+                  <select id="reservaSala" style="width:100%; padding:10px; border:1px solid #ccd6ea; border-radius:8px" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="Sala Principal">Sala Principal (10 personas)</option>
+                    <option value="Sala Ejecutiva">Sala Ejecutiva (6 personas)</option>
+                    <option value="Sala Pequeña">Sala Pequeña (4 personas)</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px">
+                <div>
+                  <label style="font-weight:600; display:block; margin-bottom:6px">Hora Inicio</label>
+                  <input type="time" id="reservaHoraInicio" style="width:100%; padding:10px; border:1px solid #ccd6ea; border-radius:8px" required />
+                </div>
+                <div>
+                  <label style="font-weight:600; display:block; margin-bottom:6px">Hora Fin</label>
+                  <input type="time" id="reservaHoraFin" style="width:100%; padding:10px; border:1px solid #ccd6ea; border-radius:8px" required />
+                </div>
+              </div>
+              <div style="margin-top:12px">
+                <label style="font-weight:600; display:block; margin-bottom:6px">Motivo</label>
+                <textarea id="reservaMotivo" placeholder="Reunión con cliente, presentación, etc." style="width:100%; padding:10px; border:1px solid #ccd6ea; border-radius:8px; min-height:80px"></textarea>
+              </div>
+              <div style="display:flex; gap:10px; margin-top:16px">
+                <button class="btn" onclick="hideReservaForm()" style="background:transparent; color:var(--primary); border:1.5px solid var(--primary)">Cancelar</button>
+                <button class="btn primary" onclick="solicitarReserva()">Solicitar Reserva</button>
+              </div>
+            </div>
+
+            <div id="reservasList"></div>
+          </div>
+        </div>
+
+        <!-- Vista de Perfil -->
+        <div id="perfilView" class="view-content" style="display:none">
+          <div style="background:#fff; border-radius:12px; padding:24px; box-shadow:0 1px 3px rgba(0,0,0,.1)">
+            <h3>Mi Perfil</h3>
+            <p style="color:#6b7280">Información del usuario (próximamente)</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <!-- ====== NUEVO: DASHBOARD DE SOCIOS: FIN ====== -->
+
+  <!-- ====== NUEVO: DASHBOARD DE OPERACIONES: INICIO ====== -->
+  <div class="dashboard" id="operacionesDashboard">
+    <div class="container">
+      <div class="dash-header">
+        <div>
+          <h2 style="margin:0">Panel de Operaciones</h2>
+          <p style="margin:4px 0 0; color:var(--muted)">Gestión de solicitudes de salas</p>
+        </div>
+        <button class="btn" onclick="logout()" style="background:transparent; color:var(--primary); border:1.5px solid var(--primary)">Cerrar sesión</button>
+      </div>
+
+      <div class="dash-content">
+        <h3>Solicitudes Pendientes</h3>
+        <div id="pendientesList"></div>
+      </div>
+
+      <div class="dash-content">
+        <h3>Todas las Reservas</h3>
+        <div id="allReservasList"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ====== NUEVO: DASHBOARD DE OPERACIONES: FIN ====== -->
+
   <!-- ================================ SCRIPTS: INICIO ==================== -->
   <script>
   // -------- Año dinámico en footer --------
@@ -999,111 +1384,600 @@
   els.forEach(el => io.observe(el));
 
   // -------- Carrusel HERO (nativo): INICIO --------
-(function(){
-  const root   = document.getElementById('heroSlides');
-  const slides = Array.from(root.querySelectorAll('.slide'));
-  const prev   = document.querySelector('.hero-carousel .prev');
-  const next   = document.querySelector('.hero-carousel .next');
-  const dotsC  = document.getElementById('heroDots');
+  (function(){
+    const root   = document.getElementById('heroSlides');
+    const slides = Array.from(root.querySelectorAll('.slide'));
+    const prev   = document.querySelector('.hero-carousel .prev');
+    const next   = document.querySelector('.hero-carousel .next');
+    const dotsC  = document.getElementById('heroDots');
 
-  let i = 0, auto = null, delay = 6500, locked = false;
+    let i = 0, auto = null, delay = 6500, locked = false;
 
-  // Crear puntos
-  slides.forEach((_, idx)=>{
-    const b = document.createElement('button');
-    b.className = 'dot' + (idx===0 ? ' active' : '');
-    b.setAttribute('aria-label', 'Ir al slide ' + (idx+1));
-    b.addEventListener('click', ()=>go(idx));
-    dotsC.appendChild(b);
+    // Crear puntos
+    slides.forEach((_, idx)=>{
+      const b = document.createElement('button');
+      b.className = 'dot' + (idx===0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Ir al slide ' + (idx+1));
+      b.addEventListener('click', ()=>go(idx));
+      dotsC.appendChild(b);
+    });
+    const dots = Array.from(dotsC.querySelectorAll('.dot'));
+
+    function go(n){
+      if(locked || n===i) return;
+      locked = true;
+      slides[i].classList.remove('active');
+      dots[i].classList.remove('active');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('active');
+      dots[i].classList.add('active');
+      setTimeout(()=> locked=false, 350);
+    }
+    function nextSlide(){ go(i+1); }
+    function prevSlide(){ go(i-1); }
+
+    prev.addEventListener('click', prevSlide);
+    next.addEventListener('click', nextSlide);
+
+    // Teclado
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowRight') nextSlide();
+      if(e.key === 'ArrowLeft')  prevSlide();
+    });
+
+    // Autoplay con pausa al hover
+    const carousel = document.querySelector('.hero-carousel');
+    function start(){ stop(); auto = setInterval(nextSlide, delay); }
+    function stop(){ if(auto) clearInterval(auto); }
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', start);
+
+    // Gestos táctiles
+    let x0 = null;
+    carousel.addEventListener('touchstart', (e)=> x0 = e.touches[0].clientX, {passive:true});
+    carousel.addEventListener('touchend', (e)=>{
+      if(x0===null) return; 
+      const dx = e.changedTouches[0].clientX - x0;
+      if(Math.abs(dx) > 50){ dx<0 ? nextSlide() : prevSlide(); }
+      x0 = null;
+    });
+
+    start();
+  })();
+  // -------- Carrusel HERO (nativo): FIN --------
+
+  // ==================== NUEVO: SISTEMA DE AUTENTICACIÓN ====================
+
+  // Usuarios simulados (en producción esto vendría de una base de datos)
+  const USUARIOS = {
+    // Socios/Asesores
+    'asesor1@sigma.com': { pass: 'demo123', rol: 'socio', nombre: 'Carlos García' },
+    'asesor2@sigma.com': { pass: 'demo123', rol: 'socio', nombre: 'María López' },
+    'asesor3@sigma.com': { pass: 'demo123', rol: 'socio', nombre: 'Juan Pérez' },
+    
+    // Operaciones (pueden aprobar)
+    'ops1@sigma.com': { pass: 'ops123', rol: 'operaciones', nombre: 'Admin Operaciones 1' },
+    'ops2@sigma.com': { pass: 'ops123', rol: 'operaciones', nombre: 'Admin Operaciones 2' },
+    'ops3@sigma.com': { pass: 'ops123', rol: 'operaciones', nombre: 'Admin Operaciones 3' },
+    
+    // Clientes (dashboard diferente - pendiente)
+    'cliente@ejemplo.com': { pass: 'cliente123', rol: 'cliente', nombre: 'Cliente Demo' }
+  };
+
+  let currentUser = null;
+  let selectedRole = null;
+
+  // Toggle dropdown
+  document.getElementById('btnLoginMenu')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelector('.login-dropdown').classList.toggle('open');
   });
-  const dots = Array.from(dotsC.querySelectorAll('.dot'));
 
-  function go(n){
-    if(locked || n===i) return;
-    locked = true;
-    slides[i].classList.remove('active');
-    dots[i].classList.remove('active');
-    i = (n + slides.length) % slides.length;
-    slides[i].classList.add('active');
-    dots[i].classList.add('active');
-    setTimeout(()=> locked=false, 350);
+  document.addEventListener('click', () => {
+    document.querySelector('.login-dropdown')?.classList.remove('open');
+  });
+
+  // Seleccionar rol
+  document.querySelectorAll('.login-option').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      selectedRole = e.target.dataset.role;
+      openModal(selectedRole);
+      document.querySelector('.login-dropdown').classList.remove('open');
+    });
+  });
+
+  function openModal(role) {
+    const modal = document.getElementById('loginModal');
+    const title = document.getElementById('loginTitle');
+    const subtitle = document.getElementById('loginSubtitle');
+    
+    title.textContent = role === 'socio' ? 'Acceso Socios' : 'Acceso Clientes';
+    subtitle.textContent = role === 'socio' ? 
+      'Gestiona tus reservas de salas' : 
+      'Consulta tu información';
+    
+    modal.setAttribute('aria-hidden', 'false');
+    document.getElementById('loginEmail').focus();
   }
-  function nextSlide(){ go(i+1); }
-  function prevSlide(){ go(i-1); }
 
-  prev.addEventListener('click', prevSlide);
-  next.addEventListener('click', nextSlide);
-
-  // Teclado
-  document.addEventListener('keydown', (e)=>{
-    if(e.key === 'ArrowRight') nextSlide();
-    if(e.key === 'ArrowLeft')  prevSlide();
-  });
-
-  // Autoplay con pausa al hover
-  const carousel = document.querySelector('.hero-carousel');
-  function start(){ stop(); auto = setInterval(nextSlide, delay); }
-  function stop(){ if(auto) clearInterval(auto); }
-  carousel.addEventListener('mouseenter', stop);
-  carousel.addEventListener('mouseleave', start);
-
-  // Gestos táctiles
-  let x0 = null;
-  carousel.addEventListener('touchstart', (e)=> x0 = e.touches[0].clientX, {passive:true});
-  carousel.addEventListener('touchend', (e)=>{
-    if(x0===null) return; 
-    const dx = e.changedTouches[0].clientX - x0;
-    if(Math.abs(dx) > 50){ dx<0 ? nextSlide() : prevSlide(); }
-    x0 = null;
-  });
-
-  start();
-})();
- // -------- Carrusel HERO (nativo): FIN --------
-
-
-// ====== Dropdown BOTON INICIO SESION ======
-const btnLoginMenu = document.getElementById('btnLoginMenu');
-const loginDropdown = btnLoginMenu?.closest('.login-dropdown');
-const loginMenu = document.getElementById('loginMenu');
-
-btnLoginMenu?.addEventListener('click', ()=>{
-  const open = loginDropdown.classList.contains('open');
-  loginDropdown.classList.toggle('open', !open);
-  btnLoginMenu.setAttribute('aria-expanded', String(!open));
-});
-document.addEventListener('click', (e)=>{
-  if(!loginDropdown.contains(e.target)) loginDropdown.classList.remove('open');
-});
-
-// ====== Abrir modal según rol ======
-loginMenu?.addEventListener('click', (e)=>{
-  if(e.target.matches('.login-option')){
-    const role = e.target.dataset.role; // 'socio' | 'cliente'
-    openLoginModal(role);
+  function closeModal() {
+    document.getElementById('loginModal').setAttribute('aria-hidden', 'true');
+    document.getElementById('loginForm').reset();
+    document.getElementById('loginError').textContent = '';
   }
-});
+
+  // Login
+  document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const pass = document.getElementById('loginPass').value;
+    const error = document.getElementById('loginError');
+    
+    const user = USUARIOS[email];
+    
+    if (!user || user.pass !== pass) {
+      error.textContent = 'Credenciales incorrectas';
+      return;
+    }
+    
+    // Login exitoso
+    currentUser = { email, ...user };
+    closeModal();
+    
+    // Mostrar dashboard según rol
+    if (user.rol === 'socio') {
+      showSocioDashboard();
+    } else if (user.rol === 'operaciones') {
+      showOperacionesDashboard();
+    } else {
+      alert('Dashboard de clientes en desarrollo');
+    }
+  });
+
+  function logout() {
+    currentUser = null;
+    document.getElementById('socioDashboard').classList.remove('active');
+    document.getElementById('operacionesDashboard').classList.remove('active');
+    document.body.classList.remove('dashboard-active');
+    
+    // Restaurar visibilidad de la landing page
+    document.querySelector('header').style.display = 'block';
+    
+    // Scroll al inicio
+    window.scrollTo(0, 0);
+  }
+
+  // ==================== DASHBOARD SOCIOS ====================
+
+  let currentDate = new Date();
+  let currentView = 'calendario';
+
+  async function showSocioDashboard() {
+    // Ocultar toda la landing page
+    document.body.classList.add('dashboard-active');
+    
+    // Mostrar dashboard
+    document.getElementById('socioDashboard').classList.add('active');
+    document.getElementById('userName').textContent = currentUser.nombre;
+    
+    // Mostrar vista de calendario por defecto
+    switchView('calendario');
+    await renderCalendar();
+    await loadReservas();
+  }
+
+  // Cambiar entre vistas
+  function switchView(view) {
+    currentView = view;
+    
+    // Actualizar menú activo
+    document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+      item.classList.remove('active');
+      if(item.dataset.view === view) {
+        item.classList.add('active');
+      }
+    });
+    
+    // Ocultar todas las vistas
+    document.querySelectorAll('.view-content').forEach(v => v.style.display = 'none');
+    
+    // Mostrar vista seleccionada
+    if(view === 'calendario') {
+      document.getElementById('calendarioView').style.display = 'block';
+      document.getElementById('dashboardTitle').textContent = 'Calendario de Salas';
+    } else if(view === 'reservas') {
+      document.getElementById('reservasView').style.display = 'block';
+      document.getElementById('dashboardTitle').textContent = 'Mis Reservas';
+    } else if(view === 'perfil') {
+      document.getElementById('perfilView').style.display = 'block';
+      document.getElementById('dashboardTitle').textContent = 'Mi Perfil';
+    }
+  }
+
+  // Event listeners para el menú
+  document.querySelectorAll('.sidebar-menu .menu-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchView(item.dataset.view);
+    });
+  });
+
+  // Renderizar calendario
+  async function renderCalendar() {
+    const year = currentDate.getFullYear();
+    const month = currentDate.getMonth();
+    
+    // Actualizar título del mes
+    const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                        'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    document.getElementById('currentMonth').textContent = `${monthNames[month]} ${year}`;
+    
+    // Obtener primer y último día del mes
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    
+    // Ajustar para que la semana empiece en Lunes (1 = Lunes, 0 = Domingo)
+    let startDay = firstDay.getDay() - 1;
+    if (startDay < 0) startDay = 6; // Si es domingo, ponerlo al final
+    
+    // Días del mes anterior a mostrar
+    const prevMonthLastDay = new Date(year, month, 0).getDate();
+    
+    const grid = document.getElementById('calendarGrid');
+    
+    // Limpiar grid (mantener headers)
+    while(grid.children.length > 7) {
+      grid.removeChild(grid.lastChild);
+    }
+    
+    // Cargar reservas
+    const reservas = await getReservasForMonth(year, month);
+    
+    let dayCount = 1;
+    let nextMonthDay = 1;
+    
+    // Generar 6 semanas (42 días)
+    for(let i = 0; i < 42; i++) {
+      const dayCell = document.createElement('div');
+      dayCell.className = 'calendar-day';
+      
+      let dayNumber;
+      let isCurrentMonth = true;
+      let cellDate;
+      
+      // Días del mes anterior
+      if(i < startDay) {
+        dayNumber = prevMonthLastDay - (startDay - i - 1);
+        dayCell.classList.add('other-month');
+        isCurrentMonth = false;
+        cellDate = new Date(year, month - 1, dayNumber);
+      }
+      // Días del mes actual
+      else if(dayCount <= lastDay.getDate()) {
+        dayNumber = dayCount;
+        cellDate = new Date(year, month, dayNumber);
+        
+        // Marcar día actual
+        const today = new Date();
+        if(cellDate.toDateString() === today.toDateString()) {
+          dayCell.classList.add('today');
+        }
+        
+        dayCount++;
+      }
+      // Días del mes siguiente
+      else {
+        dayNumber = nextMonthDay;
+        dayCell.classList.add('other-month');
+        isCurrentMonth = false;
+        cellDate = new Date(year, month + 1, nextMonthDay);
+        nextMonthDay++;
+      }
+      
+      dayCell.innerHTML = `<div class="day-number">${dayNumber}</div>`;
+      
+      // Agregar reservas del día
+      if(isCurrentMonth) {
+        const dayReservas = reservas.filter(r => {
+          const rDate = new Date(r.fecha);
+          return rDate.getDate() === dayNumber;
+        });
+        
+        dayReservas.forEach(r => {
+          const eventDiv = document.createElement('div');
+          eventDiv.className = `calendar-event ${r.estado}`;
+          eventDiv.textContent = `${r.horaInicio} ${r.sala}`;
+          eventDiv.title = `${r.sala} - ${r.horaInicio} a ${r.horaFin}\nEstado: ${r.estado}`;
+          dayCell.appendChild(eventDiv);
+        });
+      }
+      
+      grid.appendChild(dayCell);
+    }
+  }
+
+  async function getReservasForMonth(year, month) {
+    try {
+      const keys = await window.storage.list('reserva:');
+      if (!keys || !keys.keys || keys.keys.length === 0) return [];
+      
+      const reservas = [];
+      for (const key of keys.keys) {
+        try {
+          const result = await window.storage.get(key);
+          if (result && result.value) {
+            const reserva = JSON.parse(result.value);
+            if (reserva.asesor === currentUser.email) {
+              const rDate = new Date(reserva.fecha);
+              if (rDate.getFullYear() === year && rDate.getMonth() === month) {
+                reservas.push(reserva);
+              }
+            }
+          }
+        } catch (e) {
+          console.error('Error loading reserva:', e);
+        }
+      }
+      return reservas;
+    } catch (error) {
+      console.error('Error:', error);
+      return [];
+    }
+  }
+
+  function prevMonth() {
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    renderCalendar();
+  }
+
+  function nextMonth() {
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    renderCalendar();
+  }
+
+  function showNewReserva() {
+    document.getElementById('reservaForm').style.display = 'block';
+    // Set fecha mínima a hoy
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('reservaFecha').min = today;
+  }
+
+  function hideReservaForm() {
+    document.getElementById('reservaForm').style.display = 'none';
+    document.getElementById('reservaFecha').value = '';
+    document.getElementById('reservaSala').value = '';
+    document.getElementById('reservaHoraInicio').value = '';
+    document.getElementById('reservaHoraFin').value = '';
+    document.getElementById('reservaMotivo').value = '';
+  }
+
+  async function solicitarReserva() {
+    const fecha = document.getElementById('reservaFecha').value;
+    const sala = document.getElementById('reservaSala').value;
+    const horaInicio = document.getElementById('reservaHoraInicio').value;
+    const horaFin = document.getElementById('reservaHoraFin').value;
+    const motivo = document.getElementById('reservaMotivo').value;
+    
+    if (!fecha || !sala || !horaInicio || !horaFin) {
+      alert('Por favor completa todos los campos obligatorios');
+      return;
+    }
+    
+    const reserva = {
+      id: 'res_' + Date.now(),
+      asesor: currentUser.email,
+      asesorNombre: currentUser.nombre,
+      fecha,
+      sala,
+      horaInicio,
+      horaFin,
+      motivo,
+      estado: 'pendiente',
+      fechaSolicitud: new Date().toISOString()
+    };
+    
+    try {
+      await window.storage.set(`reserva:${reserva.id}`, JSON.stringify(reserva));
+      alert('✅ Solicitud enviada. Será revisada por el equipo de operaciones.');
+      hideReservaForm();
+      await loadReservas();
+    } catch (error) {
+      alert('Error al guardar la reserva');
+      console.error(error);
+    }
+  }
+
+  async function loadReservas() {
+    try {
+      const keys = await window.storage.list('reserva:');
+      if (!keys || !keys.keys || keys.keys.length === 0) {
+        document.getElementById('reservasList').innerHTML = '<p style="color:#6b7280">No tienes reservas</p>';
+        return;
+      }
+      
+      const reservas = [];
+      for (const key of keys.keys) {
+        try {
+          const result = await window.storage.get(key);
+          if (result && result.value) {
+            const reserva = JSON.parse(result.value);
+            if (reserva.asesor === currentUser.email) {
+              reservas.push(reserva);
+            }
+          }
+        } catch (e) {
+          console.error('Error loading reserva:', e);
+        }
+      }
+      
+      reservas.sort((a, b) => new Date(b.fechaSolicitud) - new Date(a.fechaSolicitud));
+      
+      if (reservas.length === 0) {
+        document.getElementById('reservasList').innerHTML = '<p style="color:#6b7280">No tienes reservas</p>';
+        return;
+      }
+      
+      document.getElementById('reservasList').innerHTML = reservas.map(r => `
+        <div class="reserva-card ${r.estado}">
+          <div style="display:flex; justify-content:space-between; align-items:start; margin-bottom:8px">
+            <div>
+              <strong style="font-size:1.1rem">${r.sala}</strong>
+              <span class="badge ${r.estado}">${r.estado.toUpperCase()}</span>
+            </div>
+            <span style="color:#6b7280; font-size:.9rem">${new Date(r.fecha).toLocaleDateString('es-ES')}</span>
+          </div>
+          <p style="margin:4px 0; color:#374151">
+            ⏰ ${r.horaInicio} - ${r.horaFin}
+          </p>
+          ${r.motivo ? `<p style="margin:8px 0 0; color:#6b7280; font-size:.95rem">${r.motivo}</p>` : ''}
+        </div>
+      `).join('');
+      
+    } catch (error) {
+      console.error('Error loading reservas:', error);
+      document.getElementById('reservasList').innerHTML = '<p style="color:#ef4444">Error al cargar reservas</p>';
+    }
+  }
+
+  // ==================== DASHBOARD OPERACIONES ====================
+
+  async function showOperacionesDashboard() {
+    // Ocultar toda la landing page
+    document.body.classList.add('dashboard-active');
+    
+    // Mostrar dashboard de operaciones
+    document.getElementById('operacionesDashboard').classList.add('active');
+    await loadAllReservas();
+  }
+
+  async function loadAllReservas() {
+    try {
+      const keys = await window.storage.list('reserva:');
+      if (!keys || !keys.keys || keys.keys.length === 0) {
+        document.getElementById('pendientesList').innerHTML = '<p style="color:#6b7280">No hay solicitudes pendientes</p>';
+        document.getElementById('allReservasList').innerHTML = '<p style="color:#6b7280">No hay reservas</p>';
+        return;
+      }
+      
+      const reservas = [];
+      for (const key of keys.keys) {
+        try {
+          const result = await window.storage.get(key);
+          if (result && result.value) {
+            reservas.push(JSON.parse(result.value));
+          }
+        } catch (e) {
+          console.error('Error loading reserva:', e);
+        }
+      }
+      
+      reservas.sort((a, b) => new Date(b.fechaSolicitud) - new Date(a.fechaSolicitud));
+      
+      const pendientes = reservas.filter(r => r.estado === 'pendiente');
+      
+      // Pendientes
+      document.getElementById('pendientesList').innerHTML = pendientes.length === 0 ? 
+        '<p style="color:#6b7280">No hay solicitudes pendientes</p>' :
+        pendientes.map(r => `
+          <div class="reserva-card pendiente" style="margin-bottom:12px">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px">
+              <div>
+                <strong style="font-size:1.1rem">${r.sala}</strong><br>
+                <span style="color:#6b7280">Solicitado por: ${r.asesorNombre}</span>
+              </div>
+              <span style="color:#6b7280">${new Date(r.fecha).toLocaleDateString('es-ES')}</span>
+            </div>
+            <p style="margin:4px 0">⏰ ${r.horaInicio} - ${r.horaFin}</p>
+            ${r.motivo ? `<p style="margin:8px 0; color:#6b7280">${r.motivo}</p>` : ''}
+            <div style="display:flex; gap:8px; margin-top:12px">
+              <button class="btn primary" onclick="aprobarReserva('${r.id}')" style="padding:.6rem 1rem">✓ Aprobar</button>
+              <button class="btn" onclick="rechazarReserva('${r.id}')" style="padding:.6rem 1rem; background:transparent; color:#ef4444; border:1.5px solid #ef4444">✗ Rechazar</button>
+            </div>
+          </div>
+        `).join('');
+      
+      // Todas
+      document.getElementById('allReservasList').innerHTML = reservas.map(r => `
+        <div class="reserva-card ${r.estado}" style="margin-bottom:12px">
+          <div style="display:flex; justify-content:space-between">
+            <div>
+              <strong>${r.sala}</strong>
+              <span class="badge ${r.estado}">${r.estado.toUpperCase()}</span><br>
+              <span style="color:#6b7280; font-size:.9rem">${r.asesorNombre}</span>
+            </div>
+            <div style="text-align:right">
+              <div>${new Date(r.fecha).toLocaleDateString('es-ES')}</div>
+              <div style="color:#6b7280; font-size:.9rem">${r.horaInicio} - ${r.horaFin}</div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      
+    } catch (error) {
+      console.error('Error:', error);
+      document.getElementById('pendientesList').innerHTML = '<p style="color:#ef4444">Error al cargar solicitudes</p>';
+      document.getElementById('allReservasList').innerHTML = '<p style="color:#ef4444">Error al cargar reservas</p>';
+    }
+  }
+
+  async function aprobarReserva(id) {
+    try {
+      const result = await window.storage.get(`reserva:${id}`);
+      if (!result) {
+        alert('Error: Reserva no encontrada');
+        return;
+      }
+      const reserva = JSON.parse(result.value);
+      reserva.estado = 'aprobada';
+      reserva.aprobadoPor = currentUser.email;
+      reserva.fechaAprobacion = new Date().toISOString();
+      
+      await window.storage.set(`reserva:${id}`, JSON.stringify(reserva));
+      alert('✅ Reserva aprobada');
+      await loadAllReservas();
+    } catch (error) {
+      alert('Error al aprobar');
+      console.error(error);
+    }
+  }
+
+  async function rechazarReserva(id) {
+    const motivo = prompt('Motivo del rechazo (opcional):');
+    try {
+      const result = await window.storage.get(`reserva:${id}`);
+      if (!result) {
+        alert('Error: Reserva no encontrada');
+        return;
+      }
+      const reserva = JSON.parse(result.value);
+      reserva.estado = 'rechazada';
+      reserva.rechazadoPor = currentUser.email;
+      reserva.motivoRechazo = motivo || '';
+      reserva.fechaRechazo = new Date().toISOString();
+      
+      await window.storage.set(`reserva:${id}`, JSON.stringify(reserva));
+      alert('❌ Reserva rechazada');
+      await loadAllReservas();
+    } catch (error) {
+      alert('Error al rechazar');
+      console.error(error);
+    }
+  }
+
+  // ==================== CREDENCIALES DE PRUEBA ====================
+  console.log('%c=== CREDENCIALES DE PRUEBA ===', 'color:#10b981; font-size:16px; font-weight:bold');
+  console.log('%cSOCIOS/ASESORES:', 'color:#3b82f6; font-weight:bold');
+  console.log('• asesor1@sigma.com / demo123');
+  console.log('• asesor2@sigma.com / demo123');
+  console.log('• asesor3@sigma.com / demo123');
+  console.log('%cOPERACIONES:', 'color:#f59e0b; font-weight:bold');
+  console.log('• ops1@sigma.com / ops123');
+  console.log('• ops2@sigma.com / ops123');
+  console.log('• ops3@sigma.com / ops123');
+  console.log('%c\nAbre la consola para ver estas credenciales', 'color:#6b7280; font-style:italic');
+
   </script>
   <!-- ================================= SCRIPTS: FIN ====================== -->
-   <!-- ====== Modal de login ====== -->
-<div class="modal" id="loginModal" aria-hidden="true">
-  <div class="modal-backdrop"></div>
-  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
-    <h3 id="loginTitle">Ingresar</h3>
-    <p id="loginSubtitle" class="muted">Selecciona rol</p>
-    <form id="loginForm">
-      <label>Correo</label>
-      <input type="email" id="loginEmail" required placeholder="correo@ejemplo.com" />
-      <label>Contraseña</label>
-      <input type="password" id="loginPass" required placeholder="••••••••" />
-      <div class="row" style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px">
-        <button type="button" class="btn ghost" onclick="closeLoginModal()">Cancelar</button>
-        <button type="submit" class="btn primary">Ingresar</button>
-      </div>
-    </form>
-    <div id="loginError" class="muted" style="color:#c0392b; margin-top:8px"></div>
-  </div>
-</div>
 
 </body>
 </html>
