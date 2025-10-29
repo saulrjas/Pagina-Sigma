@@ -562,6 +562,40 @@
   .hero-carousel .nav { display: none; }
 }
 
+.footer-logo {
+  width: 60px !important;   /* fuerza el tamaño del logo */
+  height: auto !important;
+  opacity: 0.95;
+  display: block;
+}
+/* ====== Dropdown de login ====== */
+.login-dropdown{ position:relative }
+.login-dropdown .login-menu{
+  position:absolute; right:0; top:110%;
+  background:#fff; border:1px solid #e5ecf8; border-radius:12px;
+  box-shadow: var(--shadow);
+  padding:8px; display:none; min-width:160px; z-index:70;
+}
+.login-dropdown .login-option{
+  width:100%; text-align:left; padding:10px 12px; border:0; background:#fff; cursor:pointer;
+  border-radius:10px; font-weight:600; color:#1e2a3b;
+}
+.login-dropdown .login-option:hover{ background:#f2f6ff }
+.login-dropdown.open .login-menu{ display:block }
+
+/* ====== Modal simple ====== */
+.modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:100 }
+.modal[aria-hidden="false"]{ display:flex }
+.modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.4); backdrop-filter: blur(2px) }
+.modal-card{
+  position:relative; z-index:1; width:min(420px, 92%); background:#fff; border-radius:16px;
+  border:1px solid #e5ecf8; box-shadow: var(--shadow); padding:18px 18px 14px;
+}
+.modal-card h3{ margin:0 0 6px; color:#10253f }
+.modal-card .muted{ color:#6b7280; margin:0 0 10px }
+.modal-card input{ width:100%; padding:12px; border:1px solid #ccd6ea; border-radius:12px; margin:6px 0 }
+.modal-card input:focus{ outline:none; border-color:#9fb5ee; box-shadow:0 0 0 4px #e9f0ff }
+
   </style>
   <!-- =============================== CSS: FIN ============================== -->
 </head>
@@ -600,6 +634,25 @@
         <a href="#contacto">Contacto</a>
       </div>
     </div>
+
+    <!-- ====== NAV: botón de sesión con menú ====== -->
+<div class="cta-wrap">
+  <a class="btn primary" href="https://wa.me/584123169718?text=Hola,%20me%20gustaría%20contactar%20un%20asesor" target="_blank" rel="noopener noreferrer">Contáctanos</a>
+
+  <!-- Botón de sesión -->
+  <div class="login-dropdown">
+    <button class="btn ghost" id="btnLoginMenu" aria-expanded="false">Iniciar sesión ▾</button>
+    <div class="login-menu" id="loginMenu" role="menu">
+      <button data-role="socio" class="login-option">Socios</button>
+      <button data-role="cliente" class="login-option">Clientes</button>
+    </div>
+  </div>
+
+  <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#2a3b55" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+</div>
+
   </header>
   <!-- ========================= HEADER / NAV: FIN ========================= -->
 
@@ -891,7 +944,7 @@
     <div class="container footer-grid">
       <div>
         <div class="brand" style="margin-bottom:8px">
-          <img src="assets/logo-sigma.png" alt="Sigma" />
+          <img src="assets/logotipo-blanco-footer.png" alt="Sigma" class="footer-logo" />
           <strong class="wordmark" style="color:#fff">SIGMA</strong>
         </div>
         <p style="margin:6px 0 0; color:#c4d1ee">Expertos en gestión patrimonial y protección de activos. Desde 2010.</p>
@@ -1007,7 +1060,50 @@
   start();
 })();
  // -------- Carrusel HERO (nativo): FIN --------
+
+
+// ====== Dropdown BOTON INICIO SESION ======
+const btnLoginMenu = document.getElementById('btnLoginMenu');
+const loginDropdown = btnLoginMenu?.closest('.login-dropdown');
+const loginMenu = document.getElementById('loginMenu');
+
+btnLoginMenu?.addEventListener('click', ()=>{
+  const open = loginDropdown.classList.contains('open');
+  loginDropdown.classList.toggle('open', !open);
+  btnLoginMenu.setAttribute('aria-expanded', String(!open));
+});
+document.addEventListener('click', (e)=>{
+  if(!loginDropdown.contains(e.target)) loginDropdown.classList.remove('open');
+});
+
+// ====== Abrir modal según rol ======
+loginMenu?.addEventListener('click', (e)=>{
+  if(e.target.matches('.login-option')){
+    const role = e.target.dataset.role; // 'socio' | 'cliente'
+    openLoginModal(role);
+  }
+});
   </script>
   <!-- ================================= SCRIPTS: FIN ====================== -->
+   <!-- ====== Modal de login ====== -->
+<div class="modal" id="loginModal" aria-hidden="true">
+  <div class="modal-backdrop"></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <h3 id="loginTitle">Ingresar</h3>
+    <p id="loginSubtitle" class="muted">Selecciona rol</p>
+    <form id="loginForm">
+      <label>Correo</label>
+      <input type="email" id="loginEmail" required placeholder="correo@ejemplo.com" />
+      <label>Contraseña</label>
+      <input type="password" id="loginPass" required placeholder="••••••••" />
+      <div class="row" style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px">
+        <button type="button" class="btn ghost" onclick="closeLoginModal()">Cancelar</button>
+        <button type="submit" class="btn primary">Ingresar</button>
+      </div>
+    </form>
+    <div id="loginError" class="muted" style="color:#c0392b; margin-top:8px"></div>
+  </div>
+</div>
+
 </body>
 </html>
