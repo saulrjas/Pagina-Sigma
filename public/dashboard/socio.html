@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sigma — Panel de Socio</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <div id="app-loader"><div class="spinner"></div><p>Cargando…</p></div>
+
+  <header class="dash-header">
+    <h1>Panel de Socio</h1>
+    <nav>
+      <button id="btnLogout" class="btn">Cerrar sesión</button>
+    </nav>
+  </header>
+
+  <main class="dash-main">
+    <section>
+      <h2>Calendario de Salas</h2>
+      <div id="calendar"></div>
+    </section>
+  </main>
+
+  <script src="../js/storage.js" defer></script>
+  <script src="../js/guards.js" defer></script>
+  <script src="js/socio.js" defer></script>
+  <script src="../js/app.js" defer></script>
+</body>
+</html>

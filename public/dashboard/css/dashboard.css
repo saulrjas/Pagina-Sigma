@@ -1,0 +1,24 @@
+.dash-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: #102a43;
+  color: #fff;
+  border-bottom: 2px solid #173D7A;
+}
+
+.dash-main {
+  padding: 20px;
+  color: #e6e6e6;
+}
+
+.btn {
+  border: 1px solid rgba(255,255,255,.35);
+  background: transparent;
+  color: #fff;
+  padding: .6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btn:hover { background: rgba(255,255,255,.12); }
