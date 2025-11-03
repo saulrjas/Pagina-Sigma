@@ -630,7 +630,7 @@
   /* =========================
      Units (Unidades de negocio)
      ========================= */
-  .units{ padding:56px 0 }
+  .units{ padding:56px 0; background: linear-gradient(180deg, #f7faff, #f7faff); }
   .units h2{ text-align:center; margin:0 0 24px; color:#0f2b58 }
   .grid-units{
     display:grid; gap:18px; grid-template-columns: repeat(4, 1fr);
@@ -703,7 +703,7 @@
   /* =========================
      Benefits
      ========================= */
-  .benefits{ padding:56px 0 }
+  .benefits{ padding:56px 0; background: linear-gradient(180deg, #f4f8fc, #e9f1f9);}
   .benefits h2{ text-align:center; color:#0f2b58; margin:0 0 16px }
   .benefits p.lead{ text-align:center; color:var(--muted); margin:0 auto 28px; max-width:780px }
   .benefit-grid{
@@ -729,13 +729,23 @@
     background: radial-gradient(1200px 700px at 50% 0%, #24498c, #173D7A);
     color:#fff; text-align:center; padding:64px 20px; margin:18px 0 0;
   }
+  /* --- Elimina la línea azul oscuro entre secciones --- */
+.benefits + .cta {
+  border-top: none;
+  margin-top: 0;
+}
+
   .cta h3{ font-size: clamp(1.4rem, 1.2rem + 2vw, 2.1rem); margin:0 0 10px }
   .cta p{ margin:0 0 18px; color:#e6efff }
 
   /* =========================
      Contacto (Formulario)
      ========================= */
-  .contact{ padding:56px 0 74px }
+  .contact { 
+  padding:56px 0 74px;
+  background: linear-gradient(180deg, #f4f8fc, #e9f1f9);
+}
+
   .contact h2{ text-align:center; color:#0f2b58; margin:0 0 18px }
   .form{
     max-width:760px; margin:0 auto; background:var(--card); border:1px solid #e5ecf8; border-radius:20px;
@@ -929,4 +939,40 @@ a:hover { text-decoration: underline; }
 
 @keyframes spin {
   to { transform: rotate(360deg); }
+}
+/* Quitar cualquier franja/separador antes del footer */
+.contact,
+#contacto {
+  margin-bottom: 0 !important;
+  border-bottom: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Si la franja viene de pseudo-elementos de Contacto o la CTA, los anulamos */
+.contact::before,
+.contact::after,
+.cta::before,
+.cta::after {
+  content: none !important;
+  display: none !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Evitar que se sume un margen extra con el footer */
+footer {
+  margin-top: 0 !important;     /* pegue directo al bloque anterior */
+  box-shadow: none !important;   /* por si el footer tuviera un inset */
+}
+
+/* Por si el separador es un elemento suelto entre Contacto y Footer */
+.contact + hr,
+.contact + .divider,
+.contact + .band,
+.contact + .section-sep {
+  display: none !important;
+  height: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
 }
